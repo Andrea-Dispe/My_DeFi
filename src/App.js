@@ -1,10 +1,6 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './App.css';
-import Web3 from 'web3';
-
-import VaultABI from './artifacts/contracts/Vault.sol/Vault.json';
-import FairLaunchABI from './artifacts/contracts/FairLaunch.sol/FairLaunch.json';
 
 //mui
 import { createTheme, ThemeProvider, Paper } from '@material-ui/core';
@@ -42,7 +38,6 @@ import {
 //web3
 import { useWeb3React } from '@web3-react/core';
 
-
 import WalletConnectProvider from '@walletconnect/web3-provider';
 
 const useStyles = makeStyles((theme) => ({
@@ -79,7 +74,6 @@ function App() {
   // const [darkMode, setDarkMode] = useState(false);
   const [darkMode, setDarkMode] = useState();
   const classes = useStyles();
-  const [vaults, setVaults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isConnected, setIsConnected] = useState(false);
   const [lendingData, setLendingData] = useState([]);
@@ -111,7 +105,7 @@ function App() {
   }
 
   async function loadBloackchainData(isMounted) {
-    // // LENDING POOL DATA
+    // LENDING POOL DATA
     const lendingData = mainnet.Vaults.map((pool) => {
       const loadLendingData = async () => {
         const dataPool = await getPoolInfo(pool);

@@ -8,13 +8,10 @@ const mathematics1 = 0.4; // Less than 50% utilization
 const mathematics2 = 0; // Between 50% and 90%
 const mathematics3 = 13; // Between 90% and 100%
 
-
 // testing data dependencies
 import getDomain from './Env';
 import Web3 from 'web3';
 const web3 = new Web3(getDomain());
-
-
 
 export async function getBalanceOf(param = {}) {
   const vault = getWeb3VaultContract(param.address); //new web3.eth.Contract(VaultABI, param.address);
@@ -69,6 +66,7 @@ export async function getPoolInfo(param = {}) {
     (param.baseTokenPrice * totalToken * totalToken) / totalSupply
   );
   let totalApr = landApr + stakeApr;
+
   let data = {
     name: name,
     symbol: symbol,
@@ -78,7 +76,7 @@ export async function getPoolInfo(param = {}) {
     landApr: landApr,
     stakeApr: stakeApr.toNumber(),
     totalApr: totalApr,
-    apy: Math.pow(1 + totalApr / 365, 365) - 1,
+    apy: Math.pow(1 + parseFloat(totalApr) / 365, 365) - 1,
     exchangeRate: totalToken / totalSupply,
   };
 
@@ -95,11 +93,15 @@ export async function getStakeApr(param = {}) {
 
   const totalSupply = parseInt(await vault.methods.totalSupply().call());
   const totalToken = parseInt(await vault.methods.totalToken().call());
-
+console.log('param: ', param);
   let stakeApr = BLOCKS_PER_YEAR.times(param.token * param.tokenPrice).div(
     (param.baseTokenPrice * totalToken * totalToken) / totalSupply
   );
-  // console.log('getStakeApr: ' + stakeApr.toNumber());
+
+
+  const t = parseFloat(stakeApr)
+    console.log('t: ', typeof t);
+
 
   return stakeApr.toNumber();
 }

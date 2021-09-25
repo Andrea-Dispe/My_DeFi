@@ -19,9 +19,6 @@ import Skeleton from '@material-ui/lab/Skeleton';
 
 //data
 import Icons from '../icons/icons';
-import testnet from '../testnet.json';
-import mainnet from '../mainnet.json';
-import VaultABI from '../artifacts/contracts/Vault.sol/Vault.json';
 import { formatBigNumber, formatPercentage, sumLendingPoolData} from '../utils';
 
 //Web3
@@ -447,8 +444,7 @@ export default function Pool({ loading, dummyLendingPoolData, lendingData, staki
                       <Grid container className={`${classes.poolApy}`} justifyContent="center">
                         {lendingData.length && loading === false ? (
                           <Typography variant="h4" className={`${classes.textCentered}`} style={{ fontSize: '48px' }}>
-                            {pool.apy}
-                            <span style={{ fontSize: '24px' }}>%</span>
+                         {formatPercentage(pool.apy)}
                           </Typography>
                         ) : (
                           <Skeleton animation="wave" width={150} height={58.5} className={classes.skeleton} />
