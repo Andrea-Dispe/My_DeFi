@@ -1,4 +1,4 @@
-#My Defi Platform
+# My Defi Platform
 
 This is a project I worked on when studying how to use Web3.js and working with blockchain data.
 
