@@ -6,6 +6,7 @@ import './App.css';
 import { createTheme, ThemeProvider, Paper } from '@material-ui/core';
 import { makeStyles, StylesProvider } from '@material-ui/styles';
 
+
 import Divider from '@material-ui/core/Divider';
 
 //components
@@ -71,7 +72,6 @@ const languages = [
 
 
 function App() {
-  // const [darkMode, setDarkMode] = useState(false);
   const [darkMode, setDarkMode] = useState();
   const classes = useStyles();
   const [loading, setLoading] = useState(true);

@@ -108,6 +108,7 @@ const WalletsConnectModal = ({ handleWalletClose, isOpen }) => {
   const classes = useStyles();
   const { t } = useTranslation();
   const {  account, deactivate } = useWeb3React();
+  console.log('account: ', account);
 
 
   return (

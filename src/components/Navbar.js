@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import i18next from 'i18next';
-import {truncateAddress} from '../utils'
+import { truncateAddress } from '../utils';
 
 // Mui
 import { makeStyles } from '@material-ui/styles';
@@ -48,7 +48,8 @@ const useStyles = makeStyles((theme) => ({
     color: '#ffffff',
     height: '35px',
     alignSelf: 'center',
-    width: '120px',
+    minWidth: '130px',
+    maxWidth: '300px',
   },
   toolbar: {
     display: 'flex',
@@ -85,7 +86,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Navbar({ changeTheme, darkMode, languages, connectMetamask, connnectWalletConnect, isConnected, setIsConnected }) {
+export default function Navbar({
+  changeTheme,
+  darkMode,
+  languages,
+  connectMetamask,
+  connnectWalletConnect,
+  isConnected,
+  setIsConnected,
+}) {
   const menuItem = ['saving-pool', 'stake', 'farm', 'lock-up', 'profile'];
   const [anchorEl, setAnchorEl] = useState(null);
   const classes = useStyles();
@@ -93,7 +102,7 @@ export default function Navbar({ changeTheme, darkMode, languages, connectMetama
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
 
-  let {  account,  active} = useWeb3React();
+  let { account, active } = useWeb3React();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -110,7 +119,6 @@ export default function Navbar({ changeTheme, darkMode, languages, connectMetama
   const handleWalletClose = () => {
     setIsOpen(false);
   };
-
 
   if (active) {
     localStorage.setItem('active', active);
@@ -143,7 +151,9 @@ export default function Navbar({ changeTheme, darkMode, languages, connectMetama
                 to={item === 'saving-pool' ? '/' : `/${item}`}
                 key={item}
                 selected={
-                  item === 'saving-pool' ? location.pathname === '/' || location.pathname.includes('withdraw') || location.pathname.includes('deposit') : location.pathname.includes(item)
+                  item === 'saving-pool'
+                    ? location.pathname === '/' || location.pathname.includes('withdraw') || location.pathname.includes('deposit')
+                    : location.pathname.includes(item)
                 }
               >
                 {t(`${item}`)}
@@ -155,13 +165,16 @@ export default function Navbar({ changeTheme, darkMode, languages, connectMetama
             {!active ? t('connect_wallet') : truncateAddress(account)}
           </Button>
 
-
           {!active ? (
-            <WalletsConnectModal handleWalletClose={handleWalletClose} isOpen={isOpen} connectMetamask={connectMetamask} connnectWalletConnect={connnectWalletConnect} />
+            <WalletsConnectModal
+              handleWalletClose={handleWalletClose}
+              isOpen={isOpen}
+              connectMetamask={connectMetamask}
+              connnectWalletConnect={connnectWalletConnect}
+            />
           ) : (
             <WalletMetamaskConnected handleWalletClose={handleWalletClose} isOpen={isOpen} />
           )}
-
         </div>
         <Button onClick={changeTheme} style={{ padding: '0px' }}>
           {darkMode ? <Brightness3Icon className={classes.button} /> : <WbSunnyIcon className={classes.button} />}

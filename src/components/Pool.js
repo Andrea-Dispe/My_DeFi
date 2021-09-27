@@ -150,6 +150,13 @@ const TokenAvatar = withStyles({
   },
 })(Avatar);
 
+const TypographyStyles = withStyles({
+  root: {
+    borderRadius: '0px',
+    color: "#000000"
+  },
+})(Typography);
+
 export default function Pool({ loading, dummyLendingPoolData, lendingData, stakingData }) {
   let { url } = useRouteMatch();
   const classes = useStyles();
@@ -157,8 +164,7 @@ export default function Pool({ loading, dummyLendingPoolData, lendingData, staki
   const history = useHistory();
   let web3react = useWeb3React();
   let stakingPoolData, lendingPoolData;
-
-  // const { chainId, account, activate, active } = useWeb3React();
+  const { chainId, account, activate, active } = useWeb3React();
 
   url.includes('stake')
     ? (stakingPoolData = stakingData.length && loading === false ? stakingData : dummyLendingPoolData)
@@ -188,22 +194,22 @@ export default function Pool({ loading, dummyLendingPoolData, lendingData, staki
                   <Grid container alignItems="center" justifyContent="space-around" style={{ marginBottom: '16px' }}>
                     <Avatar src={icon} style={{ borderRadius: '0%', height: 'auto' }} />
                     {title === 'price' ? (
-                      <Typography>Token {t(`${title}`)}</Typography>
+                      <TypographyStyles>Token {t(`${title}`)}</TypographyStyles>
                     ) : (
-                      <Typography>{t(`${title}`)}</Typography>
+                      <TypographyStyles>{t(`${title}`)}</TypographyStyles>
                     )}
                   </Grid>
 
                   {title !== 'price' ? (
                     <Grid container justifyContent="flex-end">
-                      <Typography style={{ fontSize: '23px', fontWeight: 600 }}>${value}</Typography>
+                      <TypographyStyles style={{ fontSize: '23px', fontWeight: 600 }}>${value}</TypographyStyles>
                     </Grid>
                   ) : (
                     <Grid container justifyContent="space-between" alignItems="center">
-                      <Typography style={{ fontSize: '23px', fontWeight: 600 }}>$98.70000</Typography>
-                      <Typography style={{ fontSize: '14px', opacity: '0.8' }}>
+                      <TypographyStyles style={{ fontSize: '23px', fontWeight: 600 }}>$98.70000</TypographyStyles>
+                      <TypographyStyles style={{ fontSize: '14px', opacity: '0.8' }}>
                         {t('purchase')} {`>`}
-                      </Typography>
+                      </TypographyStyles>
                     </Grid>
                   )}
                 </Grid>
@@ -218,34 +224,34 @@ export default function Pool({ loading, dummyLendingPoolData, lendingData, staki
         {url.includes('stake') ? (
           <Grid>
             <Card className={classes.topCardWide}>
-              <Typography className={classes.cardTitle}>{t('stake_position')}</Typography>
+              <TypographyStyles className={classes.cardTitle}>{t('stake_position')}</TypographyStyles>
               <Divider className={classes.divider} style={{ marginBottom: '0px' }} />
               <Grid container wrap="nowrap" justifyContent="center" style={{ height: '156px' }}>
                 <Grid container justifyContent="space-around" direction="column">
-                  <Typography>{t('currency')}</Typography>
+                  <TypographyStyles>{t('currency')}</TypographyStyles>
                   <Grid container alignItems="center">
                     <Avatar src={Icons.btc} className={`${classes.topCardAvatar}`} />
-                    <Typography style={{ marginLeft: '5px' }}>hBNB</Typography>
+                    <TypographyStyles style={{ marginLeft: '5px' }}>hBNB</TypographyStyles>
                   </Grid>
                 </Grid>
 
                 <Grid container justifyContent="space-around" direction="column">
-                  <Typography>{t('annualized_income')}</Typography>
-                  <Typography>12.36%</Typography>
+                  <TypographyStyles>{t('annualized_income')}</TypographyStyles>
+                  <TypographyStyles>12.36%</TypographyStyles>
                 </Grid>
 
                 <Grid container justifyContent="space-around" direction="column">
-                  <Typography>{t('pledged_assets')}</Typography>
-                  <Typography>10.05 BNB</Typography>
+                  <TypographyStyles>{t('pledged_assets')}</TypographyStyles>
+                  <TypographyStyles style={{ color: '#ffffff'}}>10.05 BNB</TypographyStyles>
                 </Grid>
 
                 <Grid container justifyContent="space-around" direction="column">
-                  <Typography>{t('pledged_assets_value')}</Typography>
-                  <Typography>9.63 BNB</Typography>
+                  <TypographyStyles>{t('pledged_assets_value')}</TypographyStyles>
+                  <TypographyStyles>9.63 BNB</TypographyStyles>
                 </Grid>
 
                 <Grid container justifyContent="space-around" alignItems="center" direction="column">
-                  <Typography>{t('operating')}</Typography>
+                  <TypographyStyles>{t('operating')}</TypographyStyles>
                   <Grid container wrap="nowrap">
                     <Button
                       variant="contained"
@@ -272,7 +278,7 @@ export default function Pool({ loading, dummyLendingPoolData, lendingData, staki
                   <TokenAvatar src={Icons.logo} className={classes.topCardAvatar} />
                   <span style={{ marginLeft: '5px' }}> Token {t('rewards')}</span>
                 </Grid>
-                <Typography style={{ fontSize: '36px' }}>826.23</Typography>
+                <TypographyStyles style={{ fontSize: '36px' }}>826.23</TypographyStyles>
                 <Button variant="contained" color="primary" className={classes.button} style={{ marginRight: '63px' }}>
                   {t('receive')}
                 </Button>
@@ -282,42 +288,42 @@ export default function Pool({ loading, dummyLendingPoolData, lendingData, staki
         ) : (
           <Grid container>
             <Card className={classes.topCardWide} style={{ width: '100%' }}>
-              <Typography className={classes.cardTitle}>{t('deposit_position')}</Typography>
+              <TypographyStyles className={classes.cardTitle}>{t('deposit_position')}</TypographyStyles>
 
               <Divider className={classes.divider} style={{ marginBottom: '0px' }} />
 
               <Grid container wrap="nowrap" justifyContent="center" style={{ height: '156px' }}>
                 <Grid container justifyContent="space-around" direction="column">
-                  <Typography>{t('currency')}</Typography>
+                  <TypographyStyles>{t('currency')}</TypographyStyles>
                   <Grid container alignItems="center">
                     <Avatar src={Icons.btc} className={classes.topCardAvatar} />
 
-                    <Typography style={{ marginLeft: '5px' }}>hBNB</Typography>
+                    <TypographyStyles style={{ marginLeft: '5px' }}>hBNB</TypographyStyles>
                   </Grid>
                 </Grid>
 
                 <Grid container justifyContent="space-around" direction="column">
-                  <Typography>{t('annualized_income')}</Typography>
-                  <Typography>12.36%</Typography>
+                  <TypographyStyles>{t('annualized_income')}</TypographyStyles>
+                  <TypographyStyles>12.36%</TypographyStyles>
                 </Grid>
 
                 <Grid container justifyContent="space-around" direction="column">
-                  <Typography>{t('initial_investment')}</Typography>
-                  <Typography>10.05 BNB</Typography>
+                  <TypographyStyles>{t('initial_investment')}</TypographyStyles>
+                  <TypographyStyles>10.05 BNB</TypographyStyles>
                 </Grid>
 
                 <Grid container justifyContent="space-around" direction="column">
-                  <Typography>{t('income_asset')}</Typography>
-                  <Typography>9.63 BNB</Typography>
+                  <TypographyStyles>{t('income_asset')}</TypographyStyles>
+                  <TypographyStyles>9.63 BNB</TypographyStyles>
                 </Grid>
 
                 <Grid container justifyContent="space-around" direction="column">
-                  <Typography>{t('synthetic_assets')}</Typography>
-                  <Typography>9.63 BNB</Typography>
+                  <TypographyStyles>{t('synthetic_assets')}</TypographyStyles>
+                  <TypographyStyles>9.63 BNB</TypographyStyles>
                 </Grid>
 
                 <Grid container justifyContent="space-around" alignItems="center" direction="column">
-                  <Typography>{t('operating')}</Typography>
+                  <TypographyStyles>{t('operating')}</TypographyStyles>
                   <Grid container wrap="nowrap">
                     <Button
                       variant="contained"
@@ -361,23 +367,23 @@ export default function Pool({ loading, dummyLendingPoolData, lendingData, staki
                     <CardContent className={classes.cardContent}>
                       <Grid container className={`${classes.poolApy}`} justifyContent="center">
                         {stakingData.length && loading === false ? (
-                          <Typography variant="h4" className={`${classes.textCentered}`} style={{ fontSize: '48px' }}>
-                            {pool.stakeAPR}
+                          <TypographyStyles variant="h4" className={`${classes.textCentered}`} style={{ fontSize: '48px' }}>
+                            {((Math.random() + 1) * 15).toFixed(2)} {/* Temporary shit until I get the stake pool APRs */}
                             <span style={{ fontSize: '24px' }}>%</span>
-                          </Typography>
+                          </TypographyStyles>
                         ) : (
                           <Skeleton animation="wave" width={150} height={58.5} className={classes.skeleton} />
                         )}
                       </Grid>
-                      <Typography className={`${classes.textCentered} ${classes.apr}`}>
+                      <TypographyStyles className={`${classes.textCentered} ${classes.apr}`}>
                         {t('annualized_rate_of_return')}
-                      </Typography>
+                      </TypographyStyles>
                       <Divider className={classes.dividerStake} />
 
                       <Grid container justifyContent={'space-between'} className={classes.dtStake}>
-                        <Typography className={classes.dataTitle}>
+                        <TypographyStyles className={classes.dataTitle}>
                           {t('stake_value')}
-                        </Typography>
+                        </TypographyStyles>
                         <div className={classes.dataTitle}>
                           {stakingData.length && loading === false ? (
                             formatBigNumber(pool.stakeValue)
@@ -388,14 +394,14 @@ export default function Pool({ loading, dummyLendingPoolData, lendingData, staki
                       </Grid>
 
                       <Grid container justifyContent={'space-between'} className={classes.dtStake}>
-                        <Typography className={classes.dataTitle}>{t('saved')}</Typography>
-                        <Typography className={classes.dataTitle}>
+                        <TypographyStyles className={classes.dataTitle}>{t('saved')}</TypographyStyles>
+                        <TypographyStyles className={classes.dataTitle}>
                           {stakingData.length && loading === false ? (
                             formatBigNumber(pool.TokenDaily)
                           ) : (
                             <Skeleton animation="wave" width={70} height={16} className={classes.skeleton} />
                           )}
-                        </Typography>
+                        </TypographyStyles>
                       </Grid>
                     </CardContent>
                     <CardActions disableSpacing className={classes.buttonGroup} style={{}}>
@@ -443,22 +449,22 @@ export default function Pool({ loading, dummyLendingPoolData, lendingData, staki
                     <CardContent className={classes.cardContent}>
                       <Grid container className={`${classes.poolApy}`} justifyContent="center">
                         {lendingData.length && loading === false ? (
-                          <Typography variant="h4" className={`${classes.textCentered}`} style={{ fontSize: '48px' }}>
+                          <TypographyStyles variant="h4" className={`${classes.textCentered}`} style={{ fontSize: '48px' }}>
                          {formatPercentage(pool.apy)}
-                          </Typography>
+                          </TypographyStyles>
                         ) : (
                           <Skeleton animation="wave" width={150} height={58.5} className={classes.skeleton} />
                         )}
                       </Grid>
-                      <Typography className={`${classes.textCentered} ${classes.apr}`}>
+                      <TypographyStyles className={`${classes.textCentered} ${classes.apr}`}>
                         {t('annualized_rate_of_return')}
-                      </Typography>
+                      </TypographyStyles>
                       <Divider className={classes.dividerLend} />
 
                       <Grid container justifyContent={'space-between'} className={classes.dtLend}>
-                        <Typography className={classes.dataTitle}>
+                        <TypographyStyles className={classes.dataTitle}>
                           {url.includes('stake') ? t('stake_value') : t('total_supply')}
-                        </Typography>
+                        </TypographyStyles>
                         <div className={classes.dataTitle}>
                           {lendingData.length && loading === false ? (
                             formatBigNumber(pool.totalDeposit)
@@ -472,10 +478,10 @@ export default function Pool({ loading, dummyLendingPoolData, lendingData, staki
                         ''
                       ) : (
                         <Grid container justifyContent={'space-between'} className={classes.dtLend}>
-                          <Typography className={classes.dataTitle}>
+                          <TypographyStyles className={classes.dataTitle}>
                             {url.includes('stake') ? t('saved') : t('total_borrowed')}
-                          </Typography>
-                          <Typography className={classes.dataTitle}>
+                          </TypographyStyles>
+                          <TypographyStyles className={classes.dataTitle}>
                             {lendingData.length && loading === false ? (
                               url.includes('stake') ? (
                                 pool.saved
@@ -485,15 +491,15 @@ export default function Pool({ loading, dummyLendingPoolData, lendingData, staki
                             ) : (
                               <Skeleton animation="wave" width={70} height={16} className={classes.skeleton} />
                             )}
-                          </Typography>
+                          </TypographyStyles>
                         </Grid>
                       )}
 
                       <Grid container justifyContent={'space-between'} className={classes.dtLend}>
-                        <Typography className={classes.dataTitle}>
+                        <TypographyStyles className={classes.dataTitle}>
                           {url.includes('stake') ? t('daily_output') : t('capital_utilization_rate')}
-                        </Typography>
-                        <Typography className={classes.dataTitle}>
+                        </TypographyStyles>
+                        <TypographyStyles className={classes.dataTitle}>
                           {/* if vaults is not empty and is not loading anymore */}
                           {lendingData.length && loading === false ? (
                             url.includes('stake') ? (
@@ -504,7 +510,7 @@ export default function Pool({ loading, dummyLendingPoolData, lendingData, staki
                           ) : (
                             <Skeleton animation="wave" width={70} height={16} className={classes.skeleton} />
                           )}
-                        </Typography>
+                        </TypographyStyles>
                       </Grid>
                     </CardContent>
                     <CardActions disableSpacing className={classes.buttonGroup}>
