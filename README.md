@@ -8,7 +8,7 @@ The app tries to emulate (Alpaca Fince DeFi Protocol)[https://www.alpacafinance.
 
 It connects to the lending, staking and farming pool in currently available in pancake swap and It connects the Metamask wallet to the Bsc (Binance Smart Chain)
 
-![My blog app presentation gif](presentation.gif)
+![My defi platform presentation gif](presentation.gif)
 
 
 #### Tech stack:
@@ -16,6 +16,7 @@ It connects to the lending, staking and farming pool in currently available in p
 - React
 - Material UI
 - Web3.js
+- i18n
 
 
 
@@ -27,5 +28,5 @@ It connects to the lending, staking and farming pool in currently available in p
 
 
 
-####
+
 
