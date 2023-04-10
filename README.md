@@ -1,4 +1,4 @@
-# Husky DeFi PLatform
+# My DeFi PLatform
 
 All the contracts I used in this project is taken from (Alpaca Finance GitHub contract repo)[https://github.com/alpaca-finance/bsc-alpaca-contract].
 
