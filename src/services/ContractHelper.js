@@ -20,8 +20,15 @@ let minABI = [
 ];
 
 const web3 = new Web3(getDomain());
-const provider = new ethers.providers.Web3Provider(window.ethereum);
 const simpleRpcProvider = new ethers.providers.JsonRpcProvider(getDomain());
+
+// Lazy-load provider only when needed to avoid errors when MetaMask is not connected
+const getProvider = () => {
+  if (!window.ethereum) {
+    throw new Error('MetaMask is not installed');
+  }
+  return new ethers.providers.Web3Provider(window.ethereum);
+};
 
 export const fromWei = async (amount) => {
   return web3.utils.fromWei(amount, 'ether');
@@ -52,7 +59,7 @@ const getContract = (abi, address, signer) => {
 // };
 
 export const getFairLaunchContract = () => {
-  return getContract(FairLaunchABI, getFairLaunch(), provider.getSigner());
+  return getContract(FairLaunchABI, getFairLaunch(), getProvider().getSigner());
 };
 
 export const getWeb3FairLaunchContract = () => {
@@ -61,7 +68,7 @@ export const getWeb3FairLaunchContract = () => {
 };
 
 export const getTokenContract = () => {
-  return getContract(TokenAbi, getToken(), provider.getSigner());
+  return getContract(TokenAbi, getToken(), getProvider().getSigner());
 };
 
 export const getWeb3TokenContract = () => {
@@ -70,7 +77,7 @@ export const getWeb3TokenContract = () => {
 };
 
 export const getMasterChefContract = () => {
-  return getContract(MasterChefABI, getPancakeMasterChef(), provider.getSigner());
+  return getContract(MasterChefABI, getPancakeMasterChef(), getProvider().getSigner());
 };
 
 export const getWeb3MasterChefContract = () => {
@@ -79,7 +86,7 @@ export const getWeb3MasterChefContract = () => {
 };
 
 export const getPancakePairContract = (address) => {
-  return getContract(PancakePairABI, address, provider.getSigner());
+  return getContract(PancakePairABI, address, getProvider().getSigner());
 };
 
 export const getWeb3PancakePairContract = (address) => {
@@ -88,7 +95,7 @@ export const getWeb3PancakePairContract = (address) => {
 };
 
 export const getVaultContract = (address) => {
-  return getContract(VaultABI, address, provider.getSigner());
+  return getContract(VaultABI, address, getProvider().getSigner());
 };
 
 export const getWeb3VaultContract = (address) => {

@@ -14,7 +14,7 @@ import { Web3ReactProvider } from '@web3-react/core'
 import { Web3Provider } from '@ethersproject/providers';
 
 
-function getLibrary(provider) {
+function getLibrary(provider, connector) {
   const library = new Web3Provider(provider);
   library.pollingInterval = 12000;
   return library;
@@ -42,11 +42,9 @@ i18n
 
 ReactDOM.render(
   <Suspense fallback="">
-    <React.StrictMode>
-      <Web3ReactProvider getLibrary={getLibrary}>
-        <App />
-      </Web3ReactProvider>
-    </React.StrictMode>
+    <Web3ReactProvider getLibrary={getLibrary}>
+      <App />
+    </Web3ReactProvider>
   </Suspense>,
   document.getElementById('root')
 );
