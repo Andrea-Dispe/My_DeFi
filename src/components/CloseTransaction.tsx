@@ -1,11 +1,9 @@
-import { Button, Card, Grid, Paper, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/styles';
+﻿import { Button, Card, Grid, Paper, Typography } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import { useTranslation } from 'react-i18next';
-import { useParams, useRouteMatch, Link as RouterLink } from 'react-router-dom';
-
-//components
+import { useParams, useLocation, Link as RouterLink } from 'react-router-dom';
 import Wrapper from './Wrapper';
-import Divider from '@material-ui/core/Divider';
+import Divider from '@mui/material/Divider';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,11 +42,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Deposit = (props) => {
+const Deposit = () => {
   const classes = useStyles();
   const { t } = useTranslation();
-  let { id } = useParams();
-  let { url } = useRouteMatch();
+  let { id } = useParams<{ id: string }>();
+  const { pathname: url } = useLocation();
 
   return (
     <Paper className={classes.root}>
@@ -59,7 +57,7 @@ const Deposit = (props) => {
 
         <Grid container alignItems="center" direction="column" style={{ marginTop: '85px' }}>
           <Card className={classes.card}>
-            <Grid container justify="center" wrap="nowrap" style={{ height: '65px', marginBottom: '37px' }}>
+            <Grid container justifyContent="center" wrap="nowrap" style={{ height: '65px', marginBottom: '37px' }}>
               <Button
                 style={{ color: '#ffffff', width: '100%' }}
                 className={url.includes('minimize') ? classes.inActive : ''}
@@ -77,40 +75,40 @@ const Deposit = (props) => {
                 {t('minimize_transactions')}
               </Button>
             </Grid>
-            <Grid container justify="space-between" style={{ padding: '0px 27px' }} direction="column">
+            <Grid container justifyContent="space-between" style={{ padding: '0px 27px' }} direction="column">
               <Grid item>
-                <Grid container justify="space-between">
+                <Grid container justifyContent="space-between">
                   <Grid style={{ color: '#ffffff' }}>{t('total_asset_value')}</Grid>
                   <Grid style={{ color: '#ffffff' }}>1017.77 DODO + 4.07 {id}</Grid>
                 </Grid>
-                <Grid container justify="space-between" style={{ marginTop: '42px' }}>
+                <Grid container justifyContent="space-between" style={{ marginTop: '42px' }}>
                   <Grid style={{ color: '#ffffff' }}>{t('transaction_amount')}</Grid>
                   <Grid style={{ color: '#ffffff' }}>{url.includes('convert') ? `0.00 DODO` : `1017.77 DODO`}</Grid>
                 </Grid>
-                <Grid container justify="space-between" style={{ marginTop: '42px' }}>
+                <Grid container justifyContent="space-between" style={{ marginTop: '42px' }}>
                   <Grid style={{ color: '#ffffff' }}>{url.includes('convert') ? t('transaction_fee') : 'PancakeSwap' + t('transaction_fee')}</Grid>
                   <Grid style={{ color: '#ffffff' }}>{url.includes('convert') ? `0.00 DODO` : `2.94 DODO (0.25%)`}</Grid>
                 </Grid>
-                <Grid container justify="space-between" style={{ marginTop: '42px' }}>
+                <Grid container justifyContent="space-between" style={{ marginTop: '42px' }}>
                   <Grid style={{ color: '#ffffff' }}>{t('converted_to_total_asset_value')}</Grid>
                   <Grid style={{ color: '#ffffff' }}>{url.includes('convert') ? `1017.77 DODO + 4.07 ${id}` : `8.12 ${id}`}</Grid>
                 </Grid>
-                <Grid container justify="space-between" style={{ marginTop: '42px', marginBottom: '42px' }}>
+                <Grid container justifyContent="space-between" style={{ marginTop: '42px', marginBottom: '42px' }}>
                   <Grid style={{ color: '#ffffff' }}>{t('debt_value')}</Grid>
                   <Grid style={{ color: '#ffffff' }}>4.00 {id}</Grid>
                 </Grid>
               </Grid>
               <Divider className={classes.divider} />
               <Grid item>
-                <Grid container justify="space-between" style={{ marginTop: '42px' }}>
+                <Grid container justifyContent="space-between" style={{ marginTop: '42px' }}>
                   <Grid style={{ color: '#ffffff' }}> {t('received_assets')}</Grid>
                   <Grid style={{ color: '#ffffff' }}>{url.includes('convert') ? `1017.98 DODO + 0.066 ${id}` : `4.00 ${id}`}</Grid>
                 </Grid>
-                <Grid container justify="space-between" style={{ marginTop: '42px' }}>
+                <Grid container justifyContent="space-between" style={{ marginTop: '42px' }}>
                   <Grid style={{ color: '#ffffff' }}>{t('minimum_received')}</Grid>
                   <Grid style={{ color: '#ffffff' }}>{url.includes('convert') ? `1017.98 DODO + 0.066 ${id}` : `4.00 ${id}`}</Grid>
                 </Grid>
-                <Grid container justify="space-around" style={{ padding: '42px 0px 39px' }}>
+                <Grid container justifyContent="space-around" style={{ padding: '42px 0px 39px' }}>
                   <Button className={`${classes.button} ${classes.buttonWithdraw}`} variant="contained" color="primary">
                     {t('confirm')}
                   </Button>
@@ -125,3 +123,4 @@ const Deposit = (props) => {
 };
 
 export default Deposit;
+

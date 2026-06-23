@@ -1,38 +1,23 @@
-// TODO: once useContext or Redux is implemented need to change the excl icon to white for the dark mode
-
-import { useState, useEffect } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-
-//Mui
-import { Grid, Input, Button, Divider, Card, Typography, Paper, Avatar } from '@material-ui/core';
-import { makeStyles, withStyles } from '@material-ui/styles';
-
-// components
+import { useWeb3React } from '@web3-react/core';
+import { Grid, Input, Button, Divider, Card, Typography, Paper, Avatar } from '@mui/material';
+import { makeStyles, withStyles } from '@mui/styles';
 import Wrapper from './Wrapper';
 import Slider from './Slider';
-
-//data
 import mainnet from '../mainnet.json';
 import { farm } from '../services/VaultService';
 import { getWalletTokenBalance } from '../services/ContractHelper';
 import {
   calculate_loss_and_fee_and_pair_standard,
   tokensBegin,
-  getFarmingData,
   getYieldFarmAPR,
 } from '../services/PancakeService';
-import { fetchTokenPrice, fetchCakePrice, formatPercentage } from '../utils';
-
-// web3
+import { fetchTokenPrice, fetchCakePrice } from '../utils';
 import Web3 from 'web3';
 import getDomain from '../services/Env';
-const web3 = new Web3(getDomain());
-import { useWeb3React } from '@web3-react/core';
-
-// icons / images
 import Icons from '../icons/icons';
-import excl from '../icons/excl.png';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -145,8 +130,9 @@ const CustomInput = withStyles({
 })(Input);
 
 const FarmMiningPool = ({ farmPools }) => {
+  const web3 = new Web3(getDomain());
   const classes = useStyles();
-  const history = useHistory();
+  const navigate = useNavigate();
   const tradeFee = 0.0025;
   const { pairs } = useParams();
   const { account } = useWeb3React();
@@ -162,9 +148,9 @@ const FarmMiningPool = ({ farmPools }) => {
   // amount of total borrowed asset
   const [totalBorrowed, setTotalBorrowed] = useState(0);
   // amount of balance of the base Token from the user's wallet
-  const [walletBalanceTokenZero, setWalletBalanceTokenZero] = useState(0);
+  const [walletBalanceTokenZero, setWalletBalanceTokenZero] = useState<string>('0');
   // amount of balance of the farming Token from the user's wallet
-  const [walletBalanceTokenOne, setWalletBalanceTokenOne] = useState(0);
+  const [walletBalanceTokenOne, setWalletBalanceTokenOne] = useState<string>('0');
   // amount of base tokens in the exchange pool
   const [tokenZeroPool, setTokenZeroPool] = useState(0);
   // amount of farming tokens in the exchange pool
@@ -180,24 +166,24 @@ const FarmMiningPool = ({ farmPools }) => {
   // current $ price of the token One
   const [priceTokenOne, setPriceTokenOne] = useState(0);
   // current $ price for the cake token
-  const [cakePrice, setCakePrice] = useState();
+  const [cakePrice, setCakePrice] = useState<number | undefined>(undefined);
   // current TVL of the pool
   const [tvl, setTvl] = useState(0);
   // current farming data
-  const [data, setData] = useState();
+  const [data, setData] = useState<any>(null);
   // current exchange (Pancake) pool address
-  const [exchangePoolAddress, setExchangePoolAddress] = useState();
+  const [exchangePoolAddress, setExchangePoolAddress] = useState<string>('');
   // current exchange (Pancake) pool ID
-  const [exchangePoolId, setExchangePoolId] = useState();
+  const [exchangePoolId, setExchangePoolId] = useState<number>(0);
   // current APY
   const [apy, setApy] = useState(0);
 
   // get the worker from the farmPools that matches the pairs param in the url
   const worker = farmPools.filter((pool) => pool.name === pairs);
   const workerParam = {
-    inputTokenOneAmount,
-    minLPAmount: 0,
-    address: worker.address,
+    inputTokenOneAmount: String(inputTokenOneAmount),
+    minLPAmount: '0',
+    address: worker[0]?.address ?? '',
   };
 
   const apyParam = {
@@ -206,29 +192,23 @@ const FarmMiningPool = ({ farmPools }) => {
     cakePrice,
   };
 
-  // on Slider bar change
   function handleSliderBarChange(event, leverage) {
     setLeverage(leverage);
-
     handleBorrowedTokenAmount(inputTokenZeroAmount, leverage);
   }
 
-  // calculate the borrowed Amount
   const handleBorrowedTokenAmount = (inputTokenZeroAmount, newLeverage = leverage) => {
     const borrowedAmount = (newLeverage - 1) * inputTokenZeroAmount;
-
     setTotalBorrowed(borrowedAmount);
   };
 
-  // on Slider manual input change
   const handleSliderInputChange = (event) => {
     let amount = parseFloat(event.target.value);
-    setLeverage(event.target.value === '' ? '' : amount);
-    setTotalBorrowed(tokenZeroSymbol * amount);
+    setLeverage(event.target.value === '' ? 1 : Number(event.target.value));
+    setTotalBorrowed(Number(tokenZeroSymbol) * amount);
     handleBorrowedTokenAmount(inputTokenZeroAmount, amount);
   };
 
-  // TODO: I dont remember what is this for
   const handleBlur = () => {
     if (leverage < 0) {
       setLeverage(0);
@@ -237,46 +217,42 @@ const FarmMiningPool = ({ farmPools }) => {
     }
   };
 
-  // on the first supplied token manual input change
-  const handleInputTokenZeroAmount = (e) => {
-    if (e.target.value < 0) {
+  const handleInputTokenZeroAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = parseFloat(e.target.value);
+    if (val < 0) {
       setInputTokenZeroAmount(0);
-    } else if (e.target.value > walletBalanceTokenZero) {
-      setInputTokenZeroAmount(walletBalanceTokenZero);
+    } else if (val > parseFloat(walletBalanceTokenZero)) {
+      setInputTokenZeroAmount(parseFloat(walletBalanceTokenZero));
     } else {
-      setInputTokenZeroAmount(e.target.value);
+      setInputTokenZeroAmount(val);
     }
-    handleBorrowedTokenAmount(e.target.value);
+    handleBorrowedTokenAmount(val);
   };
 
-  // on the second supplied token manual input change
-  const handleInputTokenOneAmount = (e) => {
-    if (e.target.value < 0) {
+  const handleInputTokenOneAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = parseFloat(e.target.value);
+    if (val < 0) {
       setInputTokenOneAmount(0);
-    } else if (e.target.value > walletBalanceTokenOne) {
-      setInputTokenOneAmount(walletBalanceTokenOne);
+    } else if (val > parseFloat(walletBalanceTokenOne)) {
+      setInputTokenOneAmount(parseFloat(walletBalanceTokenOne));
     } else {
-      setInputTokenOneAmount(e.target.value);
+      setInputTokenOneAmount(val);
     }
   };
 
-  // on the first token 25,50,75,100% button change
   const handlePortionBaseTokenAmount = (percentage, pairNumber, balance) => {
     const amount = (percentage / 100) * balance;
     pairNumber === 1 ? setInputTokenZeroAmount(amount) : setInputTokenOneAmount(amount);
-
     handleBorrowedTokenAmount(amount);
   };
 
-  // when farm button is clicked
   const handleFarm = () => {
     const pId = 0;
     const maxReturn = 0;
-    farm(worker[0].vaultAddress, pId, worker, leverage, maxReturn, inputTokenOneAmount, 0, workerParam);
+    farm(worker[0].vaultAddress, pId, worker[0].address, String(leverage), '0', String(maxReturn), workerParam);
   };
 
   useEffect(() => {
-    // get the price for token zero and token one
     const prices = fetchTokenPrice(tokenZeroSymbol, tokenOneSymbol);
     Promise.resolve(prices).then((res) => {
       const [priceTokenZero, priceTokenOne] = res;
@@ -284,7 +260,6 @@ const FarmMiningPool = ({ farmPools }) => {
       setPriceTokenOne(priceTokenOne.usd);
     });
 
-    // get the price of cake token
     const cakePrice = fetchCakePrice();
     Promise.resolve(cakePrice).then((price) => setCakePrice(price));
 
@@ -344,7 +319,7 @@ const FarmMiningPool = ({ farmPools }) => {
     if (tvl && cakePrice && exchangePoolId) {
       const rawApy = getYieldFarmAPR(apyParam);
       Promise.resolve(rawApy).then((apy) => {
-        setApy(formatPercentage(apy));
+        setApy(apy);
       });
     }
   }, [leverage, inputTokenZeroAmount, inputTokenOneAmount, tokenZeroPool, tokenOnePool]);
@@ -352,7 +327,7 @@ const FarmMiningPool = ({ farmPools }) => {
   useEffect(() => {
     if (data) {
       const [totalpriceimpactandtradingfees, totalborrowed, basetoken_get, farmingtoken_get] = data;
-      setTotalPriceImpactTradingFees((totalpriceimpactandtradingfees * 100).toFixed(2));
+      setTotalPriceImpactTradingFees(parseFloat((totalpriceimpactandtradingfees * 100).toFixed(2)));
       setTotalBorrowed(totalborrowed);
       setBaseTokensGet(basetoken_get);
       setFarmingTokensGet(farmingtoken_get);
@@ -378,7 +353,7 @@ const FarmMiningPool = ({ farmPools }) => {
         </Typography>
         {/* first block */}
         <Card className={classes.card}>
-          <Typography className={`${classes.subTitle} ${classes.textSubtitles}`}>{t('supply_assets')}</Typography>
+          <Typography className={classes.textSubtitles}>{t('supply_assets')}</Typography>
           <Grid style={{ paddingTop: '35px' }}>
             <Typography className={classes.walletBalance}>
               {t('wallet_balance')}: {walletBalanceTokenZero}
@@ -473,7 +448,6 @@ const FarmMiningPool = ({ farmPools }) => {
               handleInputChange={handleSliderInputChange}
               handleBlur={handleBlur}
               leverage={leverage}
-              style={{ marginBottom: 50 }}
             />
           </Grid>
           <Grid className={classes.loanCurrencyTitle}>
@@ -543,7 +517,7 @@ const FarmMiningPool = ({ farmPools }) => {
               <Grid>
                 <Typography>{t('comprehensive_annualized_yield')}</Typography>
               </Grid>
-              <Typography className={classes.typography}>{apy}</Typography>
+              <Typography style={{ fontSize: '16px' }}>{apy}</Typography>
             </Grid>
           </Grid>
         </Card>
@@ -553,7 +527,7 @@ const FarmMiningPool = ({ farmPools }) => {
             variant="contained"
             color="primary"
             className={classes.button}
-            onClick={() => history.push(`/farm/${pairs}/cover-up`)}
+            onClick={() => navigate(`/farm/${pairs}/cover-up`)}
           >
             {t('authorize')}
           </Button>

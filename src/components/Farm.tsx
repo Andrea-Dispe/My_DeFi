@@ -1,9 +1,7 @@
 
 import { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
-
-// MUI
-import { makeStyles } from '@material-ui/styles';
+import { useNavigate } from 'react-router-dom';
+import { makeStyles } from '@mui/styles';
 import { useTranslation } from 'react-i18next';
 import {
   Avatar,
@@ -19,27 +17,11 @@ import {
   TableHead,
   TableRow,
   Card,
-} from '@material-ui/core';
-
-//components
+} from '@mui/material';
 import LanguageSwitch from './LanguageSwitch';
 import Wrapper from './Wrapper';
-
-//data
-import mainnet from '../mainnet.json';
 import farmFilters from '../data/farmFilters';
-import {
-  calculate_loss_and_fee_and_pair_standard,
-  tokensBegin,
-  getFarmingData,
-  getYieldFarmAPR,
-} from '../services/PancakeService';
-import { fetchTokenPrice, fetchCakePrice, formatPercentage, fetchTokenPriceTest } from '../utils';
-
-// incons & images
 import Icons from '../icons/icons';
-
-// web3
 import { useWeb3React } from '@web3-react/core';
 
 const useStyles = makeStyles((theme) => ({
@@ -123,10 +105,9 @@ const useStyles = makeStyles((theme) => ({
 export default function Farm({ farmPools, filteredFarmPools, setFilteredFarmPools }) {
   const classes = useStyles();
   const { account } = useWeb3React();
-
   const languages = ['de', 'se'];
-  const history = useHistory();
-  const mainPageTopInfoCards = [{ title: 'price', icon: Icons.logo }];
+  const navigate = useNavigate();
+  const mainPageTopInfoCards = [{ title: 'price', icon: Icons.alpaca }];
   const { t } = useTranslation();
   const [leverageActive, setLeverageActive] = useState(true);
   const [liquidationActive, setLiquidationActive] = useState(false);
@@ -136,7 +117,6 @@ export default function Farm({ farmPools, filteredFarmPools, setFilteredFarmPool
     // get current farming position
     if (account) {
       const alpacaAPIPosition = `https://api.alpacafinance.org/v1/positions?owner=${account}`;
-      // fetchFarmPositionId(alpacaAPIPosition).
       fetch(alpacaAPIPosition).then((data) => console.log('data', data));
     }
   }, [account]);
@@ -178,7 +158,6 @@ export default function Farm({ farmPools, filteredFarmPools, setFilteredFarmPool
         }
       });
     }
-
     setFilteredFarmPools(filteredPools);
     setSelected(name);
   };
@@ -300,7 +279,7 @@ export default function Farm({ farmPools, filteredFarmPools, setFilteredFarmPool
                       variant="contained"
                       color="primary"
                       className={classes.buttonSm}
-                      onClick={() => history.push(`/close/sssssssssss/convert`)}
+                      onClick={() => navigate(`/close/sssssssssss/convert`)}
                     >
                       {t('sell')}
                     </Button>
@@ -366,7 +345,7 @@ export default function Farm({ farmPools, filteredFarmPools, setFilteredFarmPool
                       color="primary"
                       variant="contained"
                       className={classes.buttonSm}
-                      onClick={() => history.push(`/farm/${worker.name}/mining-pool`)}
+                      onClick={() => navigate(`/farm/${worker.name}/mining-pool`)}
                     >
                       {t('farm')}
                     </Button>

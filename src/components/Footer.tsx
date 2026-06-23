@@ -1,8 +1,5 @@
-import React from 'react';
-import {Button, ButtonGroup, Container,Divider, Avatar } from '@material-ui/core';
-import { makeStyles, withStyles} from '@material-ui/styles';
-
-//data
+import { Button, ButtonGroup, Container, Divider, Avatar } from '@mui/material';
+import { makeStyles, withStyles } from '@mui/styles';
 import footerLinks from '../data/footerLinks'
 
 const useStyles = makeStyles((theme) => ({
@@ -13,7 +10,6 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'center',
   },
-
 }));
 
 const FooterAvatars = withStyles({
@@ -24,7 +20,6 @@ const FooterAvatars = withStyles({
     objectFit: 'contain'
   }
 })(Avatar);
-
 
 const Footer = () => {
   const classes = useStyles();

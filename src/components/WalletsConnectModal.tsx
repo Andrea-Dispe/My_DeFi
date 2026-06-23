@@ -1,17 +1,15 @@
-import { makeStyles, withStyles } from '@material-ui/styles';
-import Modal from '@material-ui/core/Modal';
-import Card from '@material-ui/core/Card';
-import Grid from '@material-ui/core/Grid';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import Avatar from '@material-ui/core/Avatar';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
+﻿import { makeStyles, withStyles } from '@mui/styles';
+import Modal from '@mui/material/Modal';
+import Card from '@mui/material/Card';
+import Grid from '@mui/material/Grid';
+import CardHeader from '@mui/material/CardHeader';
+import CardContent from '@mui/material/CardContent';
+import CardActions from '@mui/material/CardActions';
+import Avatar from '@mui/material/Avatar';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
 import Icons from '../icons/icons';
-
 import { useTranslation } from 'react-i18next';
-
 import { useWeb3React } from '@web3-react/core';
 import { Injected } from '../connectors';
 
@@ -77,7 +75,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const WalletMetamaskConnected = ({ handleWalletClose, isOpen, connectMetamask, connnectWalletConnect }) => {
+interface WalletsConnectModalProps {
+  handleWalletClose: () => void;
+  isOpen: boolean;
+}
+
+const WalletMetamaskConnected = ({ handleWalletClose, isOpen }: WalletsConnectModalProps) => {
   const classes = useStyles();
   const { t } = useTranslation();
   const { activate } = useWeb3React();
@@ -144,15 +147,15 @@ const WalletMetamaskConnected = ({ handleWalletClose, isOpen, connectMetamask, c
           <Content>
             <CardActions className={classes.cardWalletWrapper}>
               <Button className={classes.cardButton} onClick={handleClick}>
-                <Grid container justify="space-between" className={classes.walletContainer}>
+                <Grid container justifyContent="space-between" className={classes.walletContainer}>
                   <Typography className={classes.cardText}>MetaMask</Typography>
                   <WalletAvatar src={Icons.metamask} />
                 </Grid>
               </Button>
             </CardActions>
             <CardActions className={classes.cardWalletWrapper}>
-              <Button className={classes.cardButton} onClick={connnectWalletConnect}>
-                <Grid container justify="space-between" className={classes.walletContainer}>
+              <Button className={classes.cardButton} onClick={() => {/* WalletConnect removed - see RENOVATION.md */}}>
+                <Grid container justifyContent="space-between" className={classes.walletContainer}>
                   <Typography className={classes.cardText}>Wallet Connect</Typography>
                   <WalletAvatar src={Icons.walletConnect} className={classes.walletAvatar} />
                 </Grid>
@@ -166,3 +169,4 @@ const WalletMetamaskConnected = ({ handleWalletClose, isOpen, connectMetamask, c
 };
 
 export default WalletMetamaskConnected;
+

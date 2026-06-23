@@ -1,21 +1,17 @@
-
+﻿
 import { useParams } from 'react-router-dom';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@mui/styles';
 import { useTranslation } from 'react-i18next';
-import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
-import Divider from '@material-ui/core/Divider';
-import Card from '@material-ui/core/Card';
-import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
-import Avatar from '@material-ui/core/Avatar';
+import Grid from '@mui/material/Grid';
+import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
+import Card from '@mui/material/Card';
+import Typography from '@mui/material/Typography';
+import Paper from '@mui/material/Paper';
+import Avatar from '@mui/material/Avatar';
 import excl from '../icons/excl.png';
 import rightarrow from '../icons/rightarrow.png';
-
-//data
 import Icons from '../icons/icons';
-
-//components
 import Wrapper from './Wrapper';
 
 const useStyles = makeStyles((theme) => ({
@@ -86,7 +82,7 @@ const FarmCoverUp = () => {
         <Typography className={classes.title}>| &nbsp; {t('cover_up')}</Typography>
 
         <Card className={classes.card}>
-          <Typography className={`${classes.subTitle} ${classes.textSubtitles}`}>{t('invested_assets')}</Typography>
+          <Typography className={classes.textSubtitles}>{t('invested_assets')}</Typography>
 
           <Grid style={{ paddingTop: '35px' }}>
             <Typography className={classes.walletBalance}>{t('wallet_balance')}: 2.46</Typography>
@@ -96,14 +92,14 @@ const FarmCoverUp = () => {
                 <Avatar src={Icons[suppliedToken]} />
                 <Typography className={classes.suppliedSwappedToken}>6.456789101112</Typography>
               </Grid>
-              <Grid container justify="flex-end">
+              <Grid container justifyContent="flex-end">
                 <Typography className={classes.suppliedSwappedToken}>{suppliedToken}</Typography>
               </Grid>
             </Grid>
             <Divider className={classes.divider} />
           </Grid>
 
-          <Grid container justify="space-between" style={{ margin: '21px 0px 55px' }}>
+          <Grid container justifyContent="space-between" style={{ margin: '21px 0px 55px' }}>
             {[25, 50, 75, 100].map((percentage) => (
               <Button className={classes.button} variant="contained" color="primary" key={percentage}>
                 {percentage}%
@@ -119,14 +115,14 @@ const FarmCoverUp = () => {
                 <Avatar src={Icons[swappedToken]} />
                 <Typography className={classes.suppliedSwappedToken}>6.456789101112</Typography>
               </Grid>
-              <Grid container justify="flex-end">
+              <Grid container justifyContent="flex-end">
                 <Typography className={classes.suppliedSwappedToken}>{swappedToken}</Typography>
               </Grid>
             </Grid>
             <Divider className={classes.divider} />
           </Grid>
 
-          <Grid container justify="space-between" className={classes.percentage}>
+          <Grid container justifyContent="space-between" className={classes.percentage}>
             {[25, 50, 75, 100].map((percentage) => (
               <Button className={classes.button} variant="contained" color="primary" key={percentage}>
                 {percentage}%
@@ -135,12 +131,12 @@ const FarmCoverUp = () => {
           </Grid>
 
           <Divider className={classes.divider} />
-          <Grid className={classes.swapData} container justify="space-between">
+          <Grid className={classes.swapData} container justifyContent="space-between">
             <Typography>PancakeSwap {t('transaction_fees_and_slippage')}</Typography>
             <Typography>0.12%</Typography>
           </Grid>
           <Divider className={classes.divider} />
-          <Grid className={classes.swapData} container justify="space-between">
+          <Grid className={classes.swapData} container justifyContent="space-between">
             <Typography>PancakeSwap {t('add_asset_value')}</Typography>
             <Typography className={classes.textData}>
               236.77 {swappedToken} + 1.63 {suppliedToken}{' '}
@@ -151,7 +147,7 @@ const FarmCoverUp = () => {
           <Grid style={{ marginTop: '96px' }}>
             <Divider className={classes.divider} />
 
-            <Grid className={classes.swapData} container justify="space-between">
+            <Grid className={classes.swapData} container justifyContent="space-between">
               <Typography>
                 {t('updated_debt_ratio')}
                 <img src={excl} style={{ marginLeft: '5px' }} alt="exclamation point icon"/>
@@ -164,7 +160,7 @@ const FarmCoverUp = () => {
 
             <Divider className={classes.divider} />
 
-            <Grid className={classes.swapData} container justify="space-between">
+            <Grid className={classes.swapData} container justifyContent="space-between">
               <Typography>{t('updated_risk_factor')}</Typography>
               <Typography className={classes.textData}>
                 <span className={classes.textDull}>49.26%</span>{' '}
@@ -173,14 +169,14 @@ const FarmCoverUp = () => {
             </Grid>
             <Divider className={classes.divider} />
 
-            <Grid className={classes.swapData} style={{ height: '65.74px' }} container justify="space-between">
+            <Grid className={classes.swapData} style={{ height: '65.74px' }} container justifyContent="space-between">
               <Typography>{t('updated_total_asset_value')}</Typography>
               <Typography className={classes.textData}>
                 <Grid container direction="column" alignItems="flex-end" style={{ marginTop: '-10px' }}>
-                  <span className={classes.textDull}>4.03ETH+1，027.71BTCB</span>
+                  <span className={classes.textDull}>4.03ETH+1ï¼Œ027.71BTCB</span>
                   <Grid container alignItems="center">
                     <img src={rightarrow} className={classes.spaceSides} alt="right arrow icon"/>
-                    <span>5.25ETH+1，339.10BTCB</span>
+                    <span>5.25ETH+1ï¼Œ339.10BTCB</span>
                   </Grid>
                 </Grid>
               </Typography>
@@ -189,7 +185,7 @@ const FarmCoverUp = () => {
             <Divider className={classes.divider} />
           </Grid>
         </Card>
-        <Grid container justify="center" style={{ padding: '66px 385px' }}>
+        <Grid container justifyContent="center" style={{ padding: '66px 385px' }}>
           <Button variant="contained" color="primary" className={classes.button}>
             {t('cover_up')}
           </Button>
@@ -200,3 +196,4 @@ const FarmCoverUp = () => {
 };
 
 export default FarmCoverUp;
+
