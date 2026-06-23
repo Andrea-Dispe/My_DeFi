@@ -1,20 +1,15 @@
-
-// TODO: add change wallet functionality to its button
-
-
-import { makeStyles, withStyles } from '@material-ui/styles';
-import Modal from '@material-ui/core/Modal';
-import Card from '@material-ui/core/Card';
-import Grid from '@material-ui/core/Grid';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardContent from '@material-ui/core/CardContent';
-import Avatar from '@material-ui/core/Avatar';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
+﻿import { makeStyles, withStyles } from '@mui/styles';
+import Modal from '@mui/material/Modal';
+import Card from '@mui/material/Card';
+import Grid from '@mui/material/Grid';
+import CardHeader from '@mui/material/CardHeader';
+import CardContent from '@mui/material/CardContent';
+import Avatar from '@mui/material/Avatar';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
 import Icons from '../icons/icons';
 import { useWeb3React } from '@web3-react/core';
 import { truncateAddress, copyToClipboard} from '../utils';
-
 import { useTranslation } from 'react-i18next';
 
 const Header = withStyles({
@@ -24,13 +19,6 @@ const Header = withStyles({
   },
 })(CardHeader);
 
-// const Content = withStyles({
-//   root: {
-//     padding: '0px 60px',
-//   },
-// })(CardContent);
-
-
 const Clock = withStyles({
   img: {
     objectFit: 'contain',
@@ -38,8 +26,6 @@ const Clock = withStyles({
     marginTop: '3px'
   },
 })(Avatar);
-
-
 
 const useStyles = makeStyles((theme) => ({
   cardWrapper: {
@@ -108,8 +94,6 @@ const WalletsConnectModal = ({ handleWalletClose, isOpen }) => {
   const classes = useStyles();
   const { t } = useTranslation();
   const {  account, deactivate } = useWeb3React();
-  console.log('account: ', account);
-
 
   return (
     <Modal open={isOpen} onClose={handleWalletClose} aria-labelledby="Popup wallet choice" aria-describedby="Popup menu window to choose the wallet to connect to">
@@ -120,42 +104,22 @@ const WalletsConnectModal = ({ handleWalletClose, isOpen }) => {
             X
           </Button>
           <CardContent className={classes.cardContent}>
-            <Grid container justify='center'>
+            <Grid container justifyContent='center'>
               <Typography style={{fontSize: '18px'}}>{t('connected_with_metamask')}</Typography>
             </Grid>
-            <Grid container justify='center' style={{padding: '25px 0px'}}>
+            <Grid container justifyContent='center' style={{padding: '25px 0px'}}>
               <Clock src={Icons.clock} />
               <Typography className={classes.address}>{truncateAddress(account, 6, 6)}</Typography>
               <span style={{position: 'absolute', left: '-99999px'}} id='address'>{account}</span>
             </Grid>
-            <Grid container justify="space-around" style={{marginBottom: '30px'}}>
+            <Grid container justifyContent="space-around" style={{marginBottom: '30px'}}>
               <Button className={`${classes.button} ${classes.secondaryButton}`} onClick={() => copyToClipboard('address')}>{t('copy_address')}</Button>
               <Button className={`${classes.button} ${classes.secondaryButton}`} href={`https://bscscan.com/address/${account}`} target="_blank" >{t('view_on_bsc')}</Button>
             </Grid>
-            <Grid container justify="center">
+            <Grid container justifyContent="center">
               <Button variant="contained" color="primary" className={`${classes.button} ${classes.mainButton}`} onClick={() => deactivate()}>
                 {t('change_wallet')}
               </Button>
-              {/* <CardActions className={classes.cardWalletWrapper}>
-              <Button className={classes.cardButton} onClick={connectMetamask}>
-                <Grid container justify="space-between" className={classes.walletContainer}>
-                  <Typography className={classes.cardText}>MetaMask</Typography>
-                  <WalletAvatar src={MetaMaskIcon}/>
-
-
-
-
-                </Grid>
-              </Button>
-            </CardActions>
-            <CardActions className={classes.cardWalletWrapper}>
-              <Button className={classes.cardButton} onClick={connnectWalletConnect}>
-                <Grid container justify="space-between" className={classes.walletContainer}>
-                  <Typography className={classes.cardText}>Wallet Connect</Typography>
-                  <WalletAvatar src={WalletConnectIcon} className={classes.walletAvatar} />
-                </Grid>
-              </Button>
-            </CardActions> */}
             </Grid>
           </CardContent>
         </Grid>
@@ -165,3 +129,4 @@ const WalletsConnectModal = ({ handleWalletClose, isOpen }) => {
 };
 
 export default WalletsConnectModal;
+

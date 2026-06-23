@@ -1,16 +1,14 @@
-import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-// MUI
-import { makeStyles } from '@material-ui/styles';
-import Button from '@material-ui/core/Button';
-import Divider from '@material-ui/core/Divider';
-import Card from '@material-ui/core/Card';
-import Grid from '@material-ui/core/Grid';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import Avatar from '@material-ui/core/Avatar';
-import Typography from '@material-ui/core/Typography';
+﻿import { useTranslation } from 'react-i18next';
+import { makeStyles } from '@mui/styles';
+import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
+import Card from '@mui/material/Card';
+import Grid from '@mui/material/Grid';
+import CardHeader from '@mui/material/CardHeader';
+import CardContent from '@mui/material/CardContent';
+import CardActions from '@mui/material/CardActions';
+import Avatar from '@mui/material/Avatar';
+import Typography from '@mui/material/Typography';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -78,9 +76,6 @@ export default function Stake({ stakes }) {
   return (
     <>
       <Typography style={{ fontSize: '24px', color: '#ffffff', margin: '46px 0px 40px' }}>| &nbsp; {t('stake')}</Typography>
-
-
-
       <Grid container className={classes.gridContainer}>
         {stakes.map((stake) => (
           <Grid key={stake.name} xs={12} sm={6} md={4} item className={classes.gridItem}>
@@ -95,17 +90,17 @@ export default function Stake({ stakes }) {
                 <Typography className={`${classes.textCentered} ${classes.apr}`}>{t('annualized_rate_of_return')}</Typography>
                 <Divider className={classes.divider} />
 
-                <Grid container justify={'space-between'} className={classes.dt}>
-                  <Typography item>{t('total_deposit')}</Typography>
-                  <Typography item>{stake.TVL}</Typography>
+                <Grid container justifyContent={'space-between'} className={classes.dt}>
+                  <Typography>{t('total_deposit')}</Typography>
+                  <Typography>{stake.TVL}</Typography>
                 </Grid>
 
-                <Grid container justify={'space-between'} className={classes.dt}>
+                <Grid container justifyContent={'space-between'} className={classes.dt}>
                   <Typography>{t('total_borrowed')}</Typography>
                   <Typography>{stake.saved}</Typography>
                 </Grid>
 
-                <Grid container justify={'space-between'} className={classes.dt}>
+                <Grid container justifyContent={'space-between'} className={classes.dt}>
                   <Typography>{t('capital_utilization_rate')}</Typography>
                   <Typography>{stake.dailyOutput}</Typography>
                 </Grid>
@@ -126,3 +121,4 @@ export default function Stake({ stakes }) {
     </>
   );
 }
+

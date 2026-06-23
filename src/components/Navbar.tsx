@@ -1,27 +1,20 @@
 // TODO: useContext and useReducer to be implemented (currently using web3react as context, see in future if that is not enough)
-import React from 'react';
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import i18next from 'i18next';
 import { truncateAddress } from '../utils';
-
-// Mui
-import { makeStyles } from '@material-ui/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import WbSunnyIcon from '@material-ui/icons/WbSunny';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-
-//Icons
+import { makeStyles } from '@mui/styles';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import WbSunnyIcon from '@mui/icons-material/WbSunny';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import Icons from '../icons/icons';
-import { MenuList } from '@material-ui/core';
-import Brightness3Icon from '@material-ui/icons/Brightness3';
-
-// web3
+import { MenuList } from '@mui/material';
+import Brightness3Icon from '@mui/icons-material/Brightness3';
 import WalletsConnectModal from './WalletsConnectModal';
 import WalletMetamaskConnected from './WalletMetamaskConnected';
 import { useWeb3React } from '@web3-react/core';
@@ -86,17 +79,27 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+interface Language {
+  code: string;
+  name: string;
+  country_code: string;
+}
+
+interface NavbarProps {
+  changeTheme: () => void;
+  darkMode: boolean;
+  languages: Language[];
+  isConnected: boolean;
+  setIsConnected: (v: boolean) => void;
+}
+
 export default function Navbar({
   changeTheme,
   darkMode,
-  languages,
-  connectMetamask,
-  connnectWalletConnect,
-  isConnected,
-  setIsConnected,
-}) {
+  languages
+}: NavbarProps) {
   const menuItem = ['saving-pool', 'stake', 'farm', 'lock-up', 'profile'];
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const classes = useStyles();
   const { t } = useTranslation();
   const location = useLocation();
@@ -104,11 +107,11 @@ export default function Navbar({
 
   let { account, active } = useWeb3React();
 
-  const handleClick = (event) => {
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = (lang) => {
+  const handleClose = (lang: Language) => {
     i18next.changeLanguage(lang.code);
     setAnchorEl(null);
   };
@@ -121,11 +124,11 @@ export default function Navbar({
   };
 
   if (active) {
-    localStorage.setItem('active', active);
+    localStorage.setItem('active', String(active));
   }
 
   return (
-    <AppBar align="center" color="inherit" elevation={0} position="static" className={`${classes.navbar}`}>
+    <AppBar color="inherit" elevation={0} position="static" className={`${classes.navbar}`}>
       <Toolbar className={classes.toolbar}>
         <Link to="/" className={classes.logoContainer}>
           <Typography variant="h6" className={classes.title} align="left">
@@ -169,8 +172,6 @@ export default function Navbar({
             <WalletsConnectModal
               handleWalletClose={handleWalletClose}
               isOpen={isOpen}
-              connectMetamask={connectMetamask}
-              connnectWalletConnect={connnectWalletConnect}
             />
           ) : (
             <WalletMetamaskConnected handleWalletClose={handleWalletClose} isOpen={isOpen} />

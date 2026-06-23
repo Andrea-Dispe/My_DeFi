@@ -1,8 +1,7 @@
-import { Button, Card, Grid, Paper, Typography } from '@material-ui/core';
-import { makeStyles, withStyles } from '@material-ui/styles';
+﻿import { Button, Card, Grid, Paper, Typography } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import { useTranslation } from 'react-i18next';
-import { useParams, useRouteMatch } from 'react-router-dom';
-
+import { useParams, useLocation } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -30,11 +29,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Deposit = (props) => {
+const Deposit = (props: any) => {
   const classes = useStyles();
   const { t } = useTranslation();
-  let { id } = useParams();
-  let { url } = useRouteMatch();
+  let { id } = useParams<{ id: string }>();
+  const { pathname: url } = useLocation();
 
   return (
     <Paper className={classes.wrapper} style={{ backgroundColor: '#ffffff' }}>
@@ -52,7 +51,7 @@ const Deposit = (props) => {
                 marginBottom: '20px',
               }}
             >
-              <Grid container justify="space-between">
+              <Grid container justifyContent="space-between">
                 <Typography style={{ padding: '30px', color: '#ffffff', fontSize: '20px' }}>{t('pledged')}</Typography>
                 <Typography style={{ padding: '30px', color: '#ffffff', fontSize: '20px' }}>236.23 h{id}</Typography>
               </Grid>
@@ -67,7 +66,7 @@ const Deposit = (props) => {
                 marginBottom: '20px',
               }}
             >
-              <Grid container justify="center" wrap="nowrap" style={{ height: '65px', marginBottom: '42px' }}>
+              <Grid container justifyContent="center" wrap="nowrap" style={{ height: '65px', marginBottom: '42px' }}>
                 <Button style={{ color: '#ffffff', width: '100%' }} className={url.includes('withdraw') ? classes.inActive : ''}>
                   {t('pledge')}
                 </Button>
@@ -76,18 +75,18 @@ const Deposit = (props) => {
                 </Button>
               </Grid>
               <Grid style={{ padding: '0px 55px' }} container>
-                <Grid container justify="space-between" style={{ padding: '21px 50px', backgroundColor: '#2A2A2D' }}>
-                  <Grid container justify="space-between">
+                <Grid container justifyContent="space-between" style={{ padding: '21px 50px', backgroundColor: '#2A2A2D' }}>
+                  <Grid container justifyContent="space-between">
                     <Grid style={{ color: '#ffffff' }}>{url.includes('deposit') ? t('deposit_amount') : t('withdraw_quantity')}</Grid>
                     <Grid style={{ color: '#ffffff' }}>{t('balance')}: 10.23BNB</Grid>
                   </Grid>
-                  <Grid container justify="space-between" style={{ marginTop: '20px' }}>
+                  <Grid container justifyContent="space-between" style={{ marginTop: '20px' }}>
                     <Grid style={{ color: '#ffffff' }}>10.23</Grid>
                     <Grid style={{ color: '#ffffff' }}>BNB | {t('max')}</Grid>
                   </Grid>
                 </Grid>
 
-                <Grid container justify="space-around" style={{ padding: '60px 0px 42px' }}>
+                <Grid container justifyContent="space-around" style={{ padding: '60px 0px 42px' }}>
                   {url.includes('pledge') ? (
                     <>
                       <Button className={`${classes.button} ${classes.buttonDeposit}`} variant="contained" color="primary">
@@ -113,3 +112,4 @@ const Deposit = (props) => {
 };
 
 export default Deposit;
+

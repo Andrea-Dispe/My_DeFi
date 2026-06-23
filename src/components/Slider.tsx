@@ -1,8 +1,7 @@
-import React from 'react';
-import { withStyles, makeStyles } from '@material-ui/styles';
-import Slider from '@material-ui/core/Slider';
-import Input from '@material-ui/core/Input';
-import Grid from '@material-ui/core/Grid';
+import { withStyles, makeStyles } from '@mui/styles';
+import MuiSlider from '@mui/material/Slider';
+import Input from '@mui/material/Input';
+import Grid from '@mui/material/Grid';
 
 const useStyles = makeStyles({
   root: {
@@ -12,26 +11,14 @@ const useStyles = makeStyles({
     width: 45,
   },
   inputContainer: {
-    // marginLeft: '22px',
-    // top: '-6px',
-    // backgroundColor: 'lightgrey',
     padding: '0px 10px 0px 0px',
-    // borderRadius:' 5px',
   },
 });
 
-
-
 const CustomSlider = withStyles((theme) => ({
-  root: {
-    // color: '#52af77',
-    // height: 800,
-    // margin: '0px 25px'
-  },
   thumb: {
     height: 20,
     width: 20,
-    // backgroundColor: '#fff',
     border: '2px solid currentColor',
     marginTop: -6,
     marginLeft: -10,
@@ -39,10 +26,6 @@ const CustomSlider = withStyles((theme) => ({
       boxShadow: 'inherit',
     },
     color: '#FB646B',
-  },
-  active: {
-    // border: '6px solid #FB646B',
-    // borderRadius: '50%'
   },
   valueLabel: {
     left: 'calc(-50% + 13px)',
@@ -68,8 +51,6 @@ const CustomSlider = withStyles((theme) => ({
     marginTop: 5,
   },
   markLabelActive: {
-    // border: '6px solid #FB646B',
-    // borderRadius: '50%',
     color: '#FB646B',
     fontWeight: '500',
   },
@@ -83,11 +64,10 @@ const CustomSlider = withStyles((theme) => ({
     color: '#C8C8CA',
     borderRadius: 30,
   },
-}))(Slider);
+}))(MuiSlider);
 
 const CustomInput = withStyles({
   input: {
-    // backgroundColor: 'lightgrey',
     padding: '5px 0px 5px 0px',
     borderRadius: '10px',
     fontSize: '18px',
@@ -132,9 +112,7 @@ export default function MySlider({ handleSliderChange, handleInputChange, levera
     <Grid container spacing={2} alignItems="center">
       <Grid item xs>
         <CustomSlider
-          // valueLabelDisplay="auto"
           aria-label="slider"
-          // defaultValue="0"
           min={1}
           max={3}
           step={0.1}
@@ -151,8 +129,6 @@ export default function MySlider({ handleSliderChange, handleInputChange, levera
           onChange={handleInputChange}
           onBlur={handleBlur}
           inputProps={{
-            // disabled: 'true',
-            // readonly: 'true',
             step: 0.1,
             min: 1.0,
             max: 3.0,
@@ -161,7 +137,6 @@ export default function MySlider({ handleSliderChange, handleInputChange, levera
           }}
           autoFocus={true}
           disableUnderline
-          // InputAdornment="disablePointerEvents"
         />
         X
       </CustomGrid>

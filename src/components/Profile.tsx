@@ -1,17 +1,8 @@
-// TODO: what is the hide white spaces on the top right? I made it a checkbox but need to be changed?
-// TODO: the sedcond card has too many columns and the layout breaks when the app is in english
-// TODO: Refactor code
-
-import { useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import { makeStyles } from '@material-ui/styles';
+import { useNavigate } from 'react-router-dom';
+import { makeStyles } from '@mui/styles';
 import { useTranslation } from 'react-i18next';
-import { Grid, Button, Divider, Card, Typography, Paper, Avatar } from '@material-ui/core';
-
-//components
+import { Grid, Button, Divider, Card, Typography, Paper, Avatar } from '@mui/material';
 import Wrapper from './Wrapper';
-
-//data
 import Icons from '../icons/icons';
 
 const useStyles = makeStyles((theme) => ({
@@ -62,14 +53,14 @@ const useStyles = makeStyles((theme) => ({
 const Profile = () => {
   const classes = useStyles();
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const depositPoolCoin = 'BTCB';
 
   return (
     <Paper className={classes.root}>
       <Wrapper>
-        <Grid container justify="space-between" className={classes.titleContainer}>
+        <Grid container justifyContent="space-between" className={classes.titleContainer}>
           <Typography className={classes.title}>| &nbsp; {t('my_profile')}</Typography>
           <Typography className={classes.title} component="label">
             <input type="checkbox" id="white_spaces" name="whiteSpaces" value="false" className={classes.inputWhiteSpaces} />
@@ -81,31 +72,31 @@ const Profile = () => {
           <Typography className={classes.cardTitle}>{t('deposit_pool')}</Typography>
           <Divider className={classes.divider} />
 
-          <Grid container wrap="nowrap" justify="center" style={{ height: '156px' }}>
-            <Grid container justify="space-around" direction="column">
+          <Grid container wrap="nowrap" justifyContent="center" style={{ height: '156px' }}>
+            <Grid container justifyContent="space-around" direction="column">
               <Typography>{t('deposit_currency')}</Typography>
               <Grid container alignItems="center">
-                <Avatar src={Icons.btc} className={classes.avatar} />
+                <Avatar src={Icons.btcb} className={classes.avatar} />
                 <Typography style={{ marginLeft: '5px' }}>{depositPoolCoin}</Typography>
               </Grid>
             </Grid>
-            <Grid container justify="space-around" direction="column">
+            <Grid container justifyContent="space-around" direction="column">
               <Typography>{t('deposit_rate')}</Typography>
               <Typography>12.36% </Typography>
             </Grid>
-            <Grid container justify="space-around" direction="column">
+            <Grid container justifyContent="space-around" direction="column">
               <Typography>{t('initial_investment')}</Typography>
               <Typography>10 {depositPoolCoin}</Typography>
             </Grid>
-            <Grid container justify="space-around" direction="column">
+            <Grid container justifyContent="space-around" direction="column">
               <Typography>{t('income_asset')}</Typography>
               <Typography>0.63 {depositPoolCoin}</Typography>
             </Grid>
-            <Grid container justify="space-around" direction="column">
+            <Grid container justifyContent="space-around" direction="column">
               <Typography>{t('synthetic_assets')}</Typography>
               <Typography>9.63 H{depositPoolCoin}</Typography>
             </Grid>
-            <Grid container justify="space-around" alignItems="center" direction="column">
+            <Grid container justifyContent="space-around" alignItems="center" direction="column">
               <Typography>{t('operating')}</Typography>
               <Grid container wrap="nowrap">
                 <Button variant="contained" color="primary" className={classes.button} style={{ marginRight: '22px' }}>
@@ -115,7 +106,7 @@ const Profile = () => {
                   variant="contained"
                   color="primary"
                   className={classes.button}
-                  onClick={() => history.push(`/close/${depositPoolCoin}/convert`)}
+                  onClick={() => navigate(`/close/${depositPoolCoin}/convert`)}
                 >
                   {t('withdraw')}
                 </Button>
@@ -128,27 +119,27 @@ const Profile = () => {
           <Typography className={classes.cardTitle}>{t('stake')}</Typography>
           <Divider className={classes.divider} />
 
-          <Grid container wrap="nowrap" justify="center" style={{ height: '156px' }}>
-            <Grid container justify="space-around" direction="column">
+          <Grid container wrap="nowrap" justifyContent="center" style={{ height: '156px' }}>
+            <Grid container justifyContent="space-around" direction="column">
               <Typography>{t('pledged_assets')}</Typography>
               <Grid container alignItems="center">
-                <Avatar src={Icons.btc} className={classes.avatar} />
+                <Avatar src={Icons.btcb} className={classes.avatar} />
                 <Typography style={{ marginLeft: '5px' }}>BTCB</Typography>
               </Grid>
             </Grid>
-            <Grid container justify="space-around" direction="column">
+            <Grid container justifyContent="space-around" direction="column">
               <Typography>{t('annualized_income')}</Typography>
               <Typography>12.36% </Typography>
             </Grid>
-            <Grid container justify="space-around" direction="column">
+            <Grid container justifyContent="space-around" direction="column">
               <Typography>{t('pledged_assets_value')}</Typography>
               <Typography>10 BTCB</Typography>
             </Grid>
-            <Grid container justify="space-around" direction="column">
+            <Grid container justifyContent="space-around" direction="column">
               <Typography>{t('token_reward')}</Typography>
               <Typography>0.63 BTCB</Typography>
             </Grid>
-            <Grid container justify="space-around" alignItems="center" direction="column">
+            <Grid container justifyContent="space-around" alignItems="center" direction="column">
               <Typography>{t('operating')}</Typography>
               <Grid container wrap="nowrap">
                 <Button variant="contained" color="primary" className={classes.button} style={{ marginRight: '22px' }}>
@@ -161,9 +152,9 @@ const Profile = () => {
             </Grid>
           </Grid>
           <Divider className={classes.divider} />
-          <Grid container justify="space-between" style={{ paddingTop: '27px' }}>
+          <Grid container justifyContent="space-between" style={{ paddingTop: '27px' }}>
             <Grid container alignItems="center" style={{ width: 'auto' }}>
-              <Avatar src={Icons.logo} />
+              <Avatar src={Icons.alpaca} />
               <span style={{ marginLeft: '5px' }}> Token {t('rewards')}</span>
             </Grid>
             <Typography style={{ fontSize: '36px' }}>826.23</Typography>
@@ -182,39 +173,39 @@ const Profile = () => {
           <Typography className={classes.cardTitle}>{t('leverage_mining')}</Typography>
           <Divider className={classes.divider} />
 
-          <Grid container wrap="nowrap" justify="center" style={{ height: '156px' }}>
-            <Grid container justify="space-around" direction="column">
+          <Grid container wrap="nowrap" justifyContent="center" style={{ height: '156px' }}>
+            <Grid container justifyContent="space-around" direction="column">
               <Typography>{t('total_asset_value')}</Typography>
               <Grid container alignItems="center">
-                <Avatar src={Icons.btc} className={classes.avatar} />
+                <Avatar src={Icons.btcb} className={classes.avatar} />
                 <Typography style={{ marginLeft: '5px' }}>BTCB</Typography>
               </Grid>
             </Grid>
-            <Grid container justify="space-around" direction="column">
+            <Grid container justifyContent="space-around" direction="column">
               <Typography>{t('debt_value')}</Typography>
               <Typography>12.36% </Typography>
             </Grid>
-            <Grid container justify="space-around" direction="column">
+            <Grid container justifyContent="space-around" direction="column">
               <Typography>{t('annualized_income')}</Typography>
               <Typography>10 BTCB</Typography>
             </Grid>
-            <Grid container justify="space-around" direction="column">
+            <Grid container justifyContent="space-around" direction="column">
               <Typography>{t('debt_ratio')}</Typography>
               <Typography>0.63 BTCB</Typography>
             </Grid>
-            <Grid container justify="space-around" direction="column">
+            <Grid container justifyContent="space-around" direction="column">
               <Typography>{t('liquidation_debt_ratio')}</Typography>
               <Typography>0.63 BTCB</Typography>
             </Grid>
-            <Grid container justify="space-around" direction="column">
+            <Grid container justifyContent="space-around" direction="column">
               <Typography>{t('risk_factor')}</Typography>
               <Typography>0.63 BTCB</Typography>
             </Grid>
-            <Grid container justify="space-around" direction="column">
+            <Grid container justifyContent="space-around" direction="column">
               <Typography>{t('token_reward')}</Typography>
               <Typography>0.63 BTCB</Typography>
             </Grid>
-            <Grid container justify="space-around" alignItems="center" direction="column">
+            <Grid container justifyContent="space-around" alignItems="center" direction="column">
               <Typography>{t('operating')}</Typography>
               <Grid container wrap="nowrap">
                 <Button variant="contained" color="primary" className={classes.button} style={{ marginRight: '22px' }}>
@@ -227,9 +218,9 @@ const Profile = () => {
             </Grid>
           </Grid>
           <Divider className={classes.divider} />
-          <Grid container justify="space-between" style={{ paddingTop: '27px' }}>
+          <Grid container justifyContent="space-between" style={{ paddingTop: '27px' }}>
             <Grid container alignItems="center" style={{ width: 'auto' }}>
-              <Avatar src={Icons.logo} />
+              <Avatar src={Icons.alpaca} />
               <span style={{ marginLeft: '5px' }}> Token {t('rewards')}</span>
             </Grid>
             <Typography style={{ fontSize: '36px' }}>826.23</Typography>
@@ -248,28 +239,28 @@ const Profile = () => {
           <Typography className={classes.cardTitle}>{t('liquidation')}</Typography>
           <Divider className={classes.divider} />
 
-          <Grid container wrap="nowrap" justify="center" style={{ height: '156px' }}>
-            <Grid container justify="space-around" direction="column">
+          <Grid container wrap="nowrap" justifyContent="center" style={{ height: '156px' }}>
+            <Grid container justifyContent="space-around" direction="column">
               <Typography>{t('trading_pair')}</Typography>
               <Grid container alignItems="center">
-                <Avatar src={Icons.btc} className={classes.avatar} />
+                <Avatar src={Icons.btcb} className={classes.avatar} />
                 <Typography style={{ margin: '0px 5px' }}>BTCB</Typography>
                 <Avatar src={Icons.cake} className={classes.avatar} />
               </Grid>
             </Grid>
-            <Grid container justify="space-around" direction="column">
+            <Grid container justifyContent="space-around" direction="column">
               <Typography>{t('liquidated_asset_value')}</Typography>
               <Typography>12.36% </Typography>
             </Grid>
-            <Grid container justify="space-around" direction="column">
+            <Grid container justifyContent="space-around" direction="column">
               <Typography>{t('debt_value')}</Typography>
               <Typography>10 BTCB</Typography>
             </Grid>
-            <Grid container justify="space-around" direction="column">
+            <Grid container justifyContent="space-around" direction="column">
               <Typography>{t('liquidation_penalty')}</Typography>
               <Typography>0.63 BTCB</Typography>
             </Grid>
-            <Grid container justify="space-around" direction="column">
+            <Grid container justifyContent="space-around" direction="column">
               <Typography>{t('refund_amount')}</Typography>
               <Typography>0.63 BTCB</Typography>
             </Grid>
@@ -282,27 +273,27 @@ const Profile = () => {
           <Grid>
             <Divider className={classes.divider} />
 
-            <Grid container wrap="nowrap" justify="center" style={{ height: '156px' }}>
-              <Grid container justify="space-around" direction="column">
+            <Grid container wrap="nowrap" justifyContent="center" style={{ height: '156px' }}>
+              <Grid container justifyContent="space-around" direction="column">
                 <Typography>{t('provide_liquidity')}</Typography>
                 <Grid container alignItems="center">
-                  <Avatar src={Icons.logo} className={classes.avatar} />
+                  <Avatar src={Icons.alpaca} className={classes.avatar} />
                   <Typography style={{ marginLeft: '5px' }}>BTCB</Typography>
                 </Grid>
               </Grid>
-              <Grid container justify="space-around" direction="column">
+              <Grid container justifyContent="space-around" direction="column">
                 <Typography>{t('locked_position')}</Typography>
                 <Typography>12.36% </Typography>
               </Grid>
-              <Grid container justify="space-around" direction="column">
+              <Grid container justifyContent="space-around" direction="column">
                 <Typography>{t('annualized_income')}</Typography>
                 <Typography>10 BTCB</Typography>
               </Grid>
-              <Grid container justify="space-around" direction="column">
+              <Grid container justifyContent="space-around" direction="column">
                 <Typography>{t('annualized_income')}</Typography>
                 <Typography>0.63 BTCB</Typography>
               </Grid>
-              <Grid container justify="space-around" alignItems="center" direction="column">
+              <Grid container justifyContent="space-around" alignItems="center" direction="column">
                 <Typography>{t('operating')}</Typography>
                 <Grid container wrap="nowrap">
                   <Button variant="contained" color="primary" className={classes.button} style={{ marginRight: '22px' }}>
@@ -315,9 +306,9 @@ const Profile = () => {
               </Grid>
             </Grid>
             <Divider className={classes.divider} />
-            <Grid container justify="space-between" style={{ paddingTop: '27px' }}>
+            <Grid container justifyContent="space-between" style={{ paddingTop: '27px' }}>
               <Grid container alignItems="center" style={{ width: 'auto' }}>
-                <Avatar src={Icons.logo} />
+                <Avatar src={Icons.alpaca} />
                 <span style={{ marginLeft: '5px' }}> Token {t('rewards')}</span>
               </Grid>
               <Typography style={{ fontSize: '36px' }}>826.23</Typography>
@@ -335,27 +326,27 @@ const Profile = () => {
           <Grid style={{ marginTop: '80px' }}>
             <Divider className={classes.divider} />
 
-            <Grid container wrap="nowrap" justify="center" style={{ height: '156px' }}>
-              <Grid container justify="space-around" direction="column">
+            <Grid container wrap="nowrap" justifyContent="center" style={{ height: '156px' }}>
+              <Grid container justifyContent="space-around" direction="column">
                 <Typography>{t('single_currency_lock')}</Typography>
                 <Grid container alignItems="center">
-                  <Avatar src={Icons.logo} className={classes.avatar} />
+                  <Avatar src={Icons.alpaca} className={classes.avatar} />
                   <Typography style={{ marginLeft: '5px' }}>BTCB</Typography>
                 </Grid>
               </Grid>
-              <Grid container justify="space-around" direction="column">
+              <Grid container justifyContent="space-around" direction="column">
                 <Typography>{t('locked_position')}</Typography>
                 <Typography>4 BTCB </Typography>
               </Grid>
-              <Grid container justify="space-around" direction="column">
+              <Grid container justifyContent="space-around" direction="column">
                 <Typography>{t('locked_up_value')}</Typography>
                 <Typography>236.58%</Typography>
               </Grid>
-              <Grid container justify="space-around" direction="column">
+              <Grid container justifyContent="space-around" direction="column">
                 <Typography>{t('annualized_income')}</Typography>
                 <Typography>0.63 BTCB</Typography>
               </Grid>
-              <Grid container justify="space-around" alignItems="center" direction="column">
+              <Grid container justifyContent="space-around" alignItems="center" direction="column">
                 <Typography>{t('operating')}</Typography>
                 <Grid container wrap="nowrap">
                   <Button variant="contained" color="primary" className={classes.button} style={{ marginRight: '22px' }}>
@@ -368,9 +359,9 @@ const Profile = () => {
               </Grid>
             </Grid>
             <Divider className={classes.divider} />
-            <Grid container justify="space-between" style={{ paddingTop: '27px' }}>
+            <Grid container justifyContent="space-between" style={{ paddingTop: '27px' }}>
               <Grid container alignItems="center" style={{ width: 'auto' }}>
-                <Avatar src={Icons.logo} />
+                <Avatar src={Icons.alpaca} />
                 <span style={{ marginLeft: '5px' }}> Token {t('rewards')}</span>
               </Grid>
               <Typography style={{ fontSize: '36px' }}>826.23</Typography>
@@ -391,3 +382,4 @@ const Profile = () => {
 };
 
 export default Profile;
+

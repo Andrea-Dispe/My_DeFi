@@ -1,22 +1,14 @@
-// TODOL like the others pages, useContext -> excl icon  darkmode
-
 import { useTranslation } from 'react-i18next';
-
-// MUI
-import { makeStyles } from '@material-ui/styles';
-import Button from '@material-ui/core/Button';
-import Divider from '@material-ui/core/Divider';
-import Card from '@material-ui/core/Card';
-import Grid from '@material-ui/core/Grid';
-import Avatar from '@material-ui/core/Avatar';
-import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
-
-//data
+import { makeStyles } from '@mui/styles';
+import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
+import Card from '@mui/material/Card';
+import Grid from '@mui/material/Grid';
+import Avatar from '@mui/material/Avatar';
+import Typography from '@mui/material/Typography';
+import Paper from '@mui/material/Paper';
 import Icons from '../icons/icons';
 import excl from '../icons/excl.png';
-
-//components
 import Wrapper from './Wrapper';
 
 const useStyles = makeStyles((theme) => ({
@@ -31,8 +23,8 @@ const useStyles = makeStyles((theme) => ({
   },
   topCard: {
     padding: '26px 32px',
-    backgroundColor: '#2A2A2D',
-    color: '#ffffff',
+    backgroundColor: theme.palette.mode === 'dark' ? '#2A2A2D' : '#FFFFFF',
+    color: theme.palette.mode === 'dark' ? '#ffffff' : '#000000',
     height: '260px',
     boxSizing: 'border-box',
   },
@@ -109,10 +101,10 @@ export default function LockUp() {
             <Card className={classes.topCard}>
               <Grid container className={classes.fullHeight}>
                 <Grid container item alignItems="center">
-                  <Avatar src={Icons.logo}></Avatar>
+                  <Avatar src={Icons.alpaca}></Avatar>
                   <Typography className={`${classes.topCardTitle} ${classes.leftSpace}`}> Token {t('price')}</Typography>
                 </Grid>
-                <Grid container alignItems="center" justify="center" className={classes.fullHeight}>
+                <Grid container alignItems="center" justifyContent="center" className={classes.fullHeight}>
                   <Typography variant="h4" className={classes.topCardContent}>
                     139.65<span className={`${classes.smallText} ${classes.symbolLeftSpace}`}>USDT</span>
                   </Typography>
@@ -124,10 +116,10 @@ export default function LockUp() {
             <Card className={classes.topCard}>
               <Grid container className={classes.fullHeight}>
                 <Grid container item alignItems="center">
-                  <Avatar src={Icons.logo}></Avatar>
+                  <Avatar src={Icons.alpaca}></Avatar>
                   <Typography className={`${classes.topCardTitle} ${classes.leftSpace}`}>Token {t('locked_position')}</Typography>
                 </Grid>
-                <Grid container alignItems="center" justify="center" className={classes.fullHeight}>
+                <Grid container alignItems="center" justifyContent="center" className={classes.fullHeight}>
                   <Typography variant="h4" className={classes.topCardContent}>
                     20.34<span className={`${classes.smallText} ${classes.symbolLeftSpace}`}>M CORGI</span>
                   </Typography>
@@ -141,7 +133,7 @@ export default function LockUp() {
           <Typography className={classes.subTitle}>{t('provide_liquidity')}</Typography>
           <Grid>
             <Divider className={classes.divider} />
-            <Grid container justify="space-between" wrap="nowrap">
+            <Grid container justifyContent="space-between" wrap="nowrap">
               <Grid item container wrap="nowrap" alignItems="center" style={{width: 'auto'}}>
                 <Typography className={classes.dataTitle}>Token-USDT LP {t('lock-up')}</Typography>
                 <img src={excl} className={classes.leftSpace} alt="exclamation point icon" />
@@ -183,7 +175,7 @@ export default function LockUp() {
 
           <Grid className={classes.containerTopSpace}>
             <Divider className={classes.divider} />
-            <Grid container justify="space-between" wrap="nowrap">
+            <Grid container justifyContent="space-between" wrap="nowrap">
               <Grid item container wrap="nowrap" alignItems="center" style={{width: 'auto'}}>
                 <Typography className={classes.dataTitle}>Token-USDT LP {t('lock-up')}</Typography>
                 <img src={excl} className={classes.leftSpace} alt="exclamation point icon" />
@@ -227,7 +219,7 @@ export default function LockUp() {
           <Typography className={classes.containerTopSpace}>{t('single_currency_lock')}</Typography>
           <Grid className={classes.containerTopSpace}>
             <Divider className={classes.divider} />
-            <Grid container justify="space-between">
+            <Grid container justifyContent="space-between">
               <Typography className={classes.dataTitle}>Token {t('lock-up')}</Typography>
               <Typography className={classes.dataTitle}>256987 Token/{t('released_today')}</Typography>
               <Typography className={classes.dataTitle}>
@@ -275,3 +267,4 @@ export default function LockUp() {
     </Paper>
   );
 }
+

@@ -1,11 +1,9 @@
-//TODO: when will apply useCOntext to pass the darkmode var to the components need to use it to rendere the back arrow in the light mode
-import React, { useState } from 'react';
-import { Button, Card, Grid, Paper, Typography, Input } from '@material-ui/core';
-import { makeStyles } from '@material-ui/styles';
+﻿import { useState } from 'react';
+import { Button, Card, Grid, Paper, Typography, Input } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import { useTranslation } from 'react-i18next';
-import { useParams, useRouteMatch, Link as RouterLink } from 'react-router-dom';
+import { useParams, useLocation, Link as RouterLink } from 'react-router-dom';
 import { useWeb3React } from '@web3-react/core';
-//data
 import whiteDownArrow from '../icons/white-downarrow.png';
 import { withdraw, deposit} from '../services/VaultService';
 import { getWalletBnbBalance } from '../services/ContractHelper';
@@ -93,15 +91,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Deposit = (props) => {
+const Deposit = () => {
   const classes = useStyles();
   const { t } = useTranslation();
-  const { url } = useRouteMatch();
-  const { id } = useParams();
+  const { pathname: url } = useLocation();
+  const { id } = useParams<{ id: string }>();
   const depositToken = id.toUpperCase();
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState<string>('0');
   const { account } = useWeb3React();
-
 
   const getFullBalance = async (account) => {
     const maxAmount = await getWalletBnbBalance(account);
@@ -110,12 +107,11 @@ const Deposit = (props) => {
 
   const handleAmount = (e) => {
     if (e.target.value < 0) {
-      setAmount(0);
+      setAmount('0');
     } else {
       setAmount(e.target.value);
     }
   };
-
 
   return (
     <Paper style={{ backgroundColor: '#ffffff' }}>
@@ -126,7 +122,7 @@ const Deposit = (props) => {
         <Grid container alignItems="center" direction="column" style={{ marginTop: '75px' }}>
           <Grid item>
             <Card className={classes.mainCard}>
-              <Grid container justify="space-between">
+              <Grid container justifyContent="space-between">
                 <Typography className={classes.textInfoTop}>{t('saved')}</Typography>
                 <Typography className={classes.textInfoTop}>***{depositToken}</Typography>
               </Grid>
@@ -134,7 +130,7 @@ const Deposit = (props) => {
           </Grid>
           <Grid item>
             <Card className={classes.mainCard} style={{marginBottom: '120px'}}>
-              <Grid container justify="center" wrap="nowrap" className={classes.topButtonsContainer}>
+              <Grid container justifyContent="center" wrap="nowrap" className={classes.topButtonsContainer}>
                 <Button
                   className={`${url.includes('withdraw') ? classes.inActive : ''} ${classes.topButton}`}
                   component={RouterLink}
@@ -151,8 +147,8 @@ const Deposit = (props) => {
                 </Button>
               </Grid>
               <Grid className={classes.cardContentWrapper} container>
-                <Grid container justify="space-between" className={classes.cardContentBackground}>
-                  <Grid container justify="space-between">
+                <Grid container justifyContent="space-between" className={classes.cardContentBackground}>
+                  <Grid container justifyContent="space-between">
                     <Grid className={classes.cardContent}>
                       {url.includes('deposit') ? t('deposit_amount') : t('withdraw_quantity')}
                     </Grid>
@@ -160,7 +156,7 @@ const Deposit = (props) => {
                       {t('balance')}: 10.23{depositToken}
                     </Grid>
                   </Grid>
-                  <Grid container justify="space-between" style={{ marginTop: '20px' }}>
+                  <Grid container justifyContent="space-between" style={{ marginTop: '20px' }}>
                     <Input
                       className={`${classes.cardContent} ${classes.textField}`}
                       value={amount}
@@ -169,8 +165,6 @@ const Deposit = (props) => {
                       disableUnderline
                       autoFocus={true}
                       inputProps={{
-                        // disabled: 'true',
-                        // readonly: 'true',
                         step: 0.001,
                         type: 'number',
                         'aria-labelledby': 'input-slider',
@@ -192,12 +186,12 @@ const Deposit = (props) => {
                   </div>
                   <Typography className={`${classes.cardContent} ${classes.deposit}`}>{t('deposit_money')}</Typography>
                 </Grid>
-                <Grid container justify="space-between" className={classes.cardContentBackground}>
+                <Grid container justifyContent="space-between" className={classes.cardContentBackground}>
                   <Grid className={classes.cardContent}>9.63</Grid>
                   <Grid className={classes.cardContent}>h{depositToken}</Grid>
                 </Grid>
 
-                <Grid container justify="space-around" className={classes.buttonsBottomContainer}>
+                <Grid container justifyContent="space-around" className={classes.buttonsBottomContainer}>
                   {url.includes('deposit') ? (
                     <>
                       <Button
@@ -238,3 +232,4 @@ const Deposit = (props) => {
 };
 
 export default Deposit;
+

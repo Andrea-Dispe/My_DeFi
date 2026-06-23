@@ -1,8 +1,7 @@
-import { Button, Card, Grid, Paper, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/styles';
+﻿import { Button, Card, Grid, Paper, Typography } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import { useTranslation } from 'react-i18next';
-import { useParams, useRouteMatch, Link as RouterLink } from 'react-router-dom';
-
+import { useParams, useLocation, Link as RouterLink } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -72,11 +71,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Deposit = (props) => {
+const Deposit = () => {
   const classes = useStyles();
   const { t } = useTranslation();
-  let { id } = useParams();
-  let { url } = useRouteMatch();
+  let { id } = useParams<{ id: string }>();
+  const { pathname: url } = useLocation();
 
   return (
     <Paper style={{ backgroundColor: '#ffffff' }}>
@@ -87,7 +86,7 @@ const Deposit = (props) => {
         <Grid container alignItems="center" direction="column" style={{ marginTop: '85px' }}>
           <Grid item>
             <Card className={classes.mainCard}>
-              <Grid container justify="space-between">
+              <Grid container justifyContent="space-between">
                 <Typography className={classes.textInfoTop}>{t('pledged')}</Typography>
                 <Typography className={classes.textInfoTop}>236.23 h{id}</Typography>
               </Grid>
@@ -95,7 +94,7 @@ const Deposit = (props) => {
           </Grid>
           <Grid item>
             <Card className={classes.mainCard} >
-              <Grid container justify="center" wrap="nowrap" className={classes.topButtonsContainer}>
+              <Grid container justifyContent="center" wrap="nowrap" className={classes.topButtonsContainer}>
                 <Button
                   className={`${url.includes('release-pledge') ? classes.inActive : ''} ${classes.topButton}`}
                   component={RouterLink}
@@ -112,18 +111,18 @@ const Deposit = (props) => {
                 </Button>
               </Grid>
               <Grid className={classes.cardContentWrapper} container>
-                <Grid container justify="space-between" className={classes.cardContentBackground}>
-                  <Grid container justify="space-between">
+                <Grid container justifyContent="space-between" className={classes.cardContentBackground}>
+                  <Grid container justifyContent="space-between">
                     <Grid className={classes.cardContent}>{url.includes('release') ? t('number_of_released') : t('pledge_amount')}</Grid>
                     <Grid className={classes.cardContent}>{url.includes('release') ? t('releasable') : t('pledgeable')}: 10.23BNB</Grid>
                   </Grid>
-                  <Grid container justify="space-between" style={{ marginTop: '20px' }}>
+                  <Grid container justifyContent="space-between" style={{ marginTop: '20px' }}>
                     <Grid className={classes.cardContent}>10.23</Grid>
                     <Grid className={classes.cardContent}>hBNB | {t('max')}</Grid>
                   </Grid>
                 </Grid>
 
-                <Grid container justify="space-around" className={classes.buttonsBottomContainer}>
+                <Grid container justifyContent="space-around" className={classes.buttonsBottomContainer}>
                   {url.includes('pledge') ? (
                     <>
                       <Button className={`${classes.button} ${classes.buttonDeposit}`} variant="contained" color="primary">
@@ -149,3 +148,4 @@ const Deposit = (props) => {
 };
 
 export default Deposit;
+

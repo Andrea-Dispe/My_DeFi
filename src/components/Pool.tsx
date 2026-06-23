@@ -1,27 +1,19 @@
-import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useRouteMatch, useHistory } from 'react-router-dom';
-
-// MUI
-import { makeStyles, StylesProvider, withStyles } from '@material-ui/styles';
-
-import Button from '@material-ui/core/Button';
-import Divider from '@material-ui/core/Divider';
-import Card from '@material-ui/core/Card';
-import Grid from '@material-ui/core/Grid';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import Avatar from '@material-ui/core/Avatar';
-import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
-import Skeleton from '@material-ui/lab/Skeleton';
-
-//data
+import { useNavigate, useLocation } from 'react-router-dom';
+import { makeStyles, withStyles } from '@mui/styles';
+import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
+import Card from '@mui/material/Card';
+import Grid from '@mui/material/Grid';
+import CardHeader from '@mui/material/CardHeader';
+import CardContent from '@mui/material/CardContent';
+import CardActions from '@mui/material/CardActions';
+import Avatar from '@mui/material/Avatar';
+import Typography from '@mui/material/Typography';
+import Paper from '@mui/material/Paper';
+import Skeleton from '@mui/material/Skeleton';
 import Icons from '../icons/icons';
 import { formatBigNumber, formatPercentage, sumLendingPoolData} from '../utils';
-
-//Web3
 import { useWeb3React } from '@web3-react/core';
 
 const useStyles = makeStyles((theme) => ({
@@ -45,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   topCardWide: {
-    backgroundColor: theme.palette.type === 'light' ? '#FFFFFF' : '#2A2A2D',
+    backgroundColor: theme.palette.mode === 'light' ? '#FFFFFF' : '#2A2A2D',
     padding: '0px 30px 18px',
     borderRadius: '14px',
     marginBottom: '125px',
@@ -59,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
   cardContainer: {
     width: 268,
     height: 427,
-    backgroundColor: theme.palette.type === 'light' ? '#FFFFFF' : '#2A2A2D',
+    backgroundColor: theme.palette.mode === 'light' ? '#FFFFFF' : '#2A2A2D',
     boxSizing: 'border-box',
     padding: '30px 25px 20px',
     borderRadius: '14px',
@@ -68,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
   topCard: {
     width: '274px',
     // height: '120px',
-    backgroundColor: theme.palette.type === 'light' ? '#FFFFFF' : '#2A2A2D',
+    backgroundColor: theme.palette.mode === 'light' ? '#FFFFFF' : '#2A2A2D',
     borderRadius: '8px',
     padding: '17px 40px 24px',
     boxSizing: 'border-box',
@@ -92,7 +84,7 @@ const useStyles = makeStyles((theme) => ({
   },
   cardTitle: {
     fontSize: '24px',
-    color: theme.palette.type === 'light' ? '#100E0E' : '#FFFFFF',
+    color: theme.palette.mode === 'light' ? '#100E0E' : '#FFFFFF',
     padding: '21px 0px 17px',
   },
   dataTitle: {
@@ -157,34 +149,29 @@ const TypographyStyles = withStyles({
   },
 })(Typography);
 
-export default function Pool({ loading, dummyLendingPoolData, lendingData, stakingData }) {
-  let { url } = useRouteMatch();
+export default function Pool({ loading, dummyLendingPoolData, lendingData, stakingData }: any) {
+  const location = useLocation();
+  const url = location.pathname;
   const classes = useStyles();
   const { t } = useTranslation();
-  const history = useHistory();
-  let web3react = useWeb3React();
-  let stakingPoolData, lendingPoolData;
+  const navigate = useNavigate();
   const { chainId, account, activate, active } = useWeb3React();
+  let stakingPoolData: any, lendingPoolData: any;
 
   url.includes('stake')
-    ? (stakingPoolData = stakingData.length && loading === false ? stakingData : dummyLendingPoolData)
+    ? (stakingPoolData = stakingData && stakingData.length && loading === false ? stakingData : dummyLendingPoolData)
     : (lendingPoolData = lendingData.length && loading === false ? lendingData : dummyLendingPoolData);
-
-
 
   const mainPageTopInfoCards = [
     { title: 'total_locked_position', icon: Icons.moneyBag, value: sumLendingPoolData(url, lendingData , loading, lendingPoolData,  'totalDeposit') },
     { title: 'total_borrowed', icon: Icons.wallet, value: sumLendingPoolData(url, lendingData , loading, lendingPoolData,  'totalBorrowed') },
     { title: 'today_incomes', icon: Icons.incomes },
-    { title: 'price', icon: Icons.logo },
+    { title: 'price', icon: Icons.alpaca },
   ];
-
 
   return (
     <Paper>
       <Paper className={classes.poolWrapper}>
-        {/* 4 cards layout */}
-
         {/* first block  */}
         {!url.includes('stake') ? (
           <Grid container justifyContent="space-between" style={{ padding: '75px 0px 0px' }}>
@@ -225,12 +212,12 @@ export default function Pool({ loading, dummyLendingPoolData, lendingData, staki
           <Grid>
             <Card className={classes.topCardWide}>
               <TypographyStyles className={classes.cardTitle}>{t('stake_position')}</TypographyStyles>
-              <Divider className={classes.divider} style={{ marginBottom: '0px' }} />
+              <Divider className={classes.dividerStake} style={{ marginBottom: '0px' }} />
               <Grid container wrap="nowrap" justifyContent="center" style={{ height: '156px' }}>
                 <Grid container justifyContent="space-around" direction="column">
                   <TypographyStyles>{t('currency')}</TypographyStyles>
                   <Grid container alignItems="center">
-                    <Avatar src={Icons.btc} className={`${classes.topCardAvatar}`} />
+                    <Avatar src={Icons.btcb} className={`${classes.topCardAvatar}`} />
                     <TypographyStyles style={{ marginLeft: '5px' }}>hBNB</TypographyStyles>
                   </Grid>
                 </Grid>
@@ -265,17 +252,17 @@ export default function Pool({ loading, dummyLendingPoolData, lendingData, staki
                       variant="contained"
                       color="primary"
                       className={classes.button}
-                      onClick={() => history.push(`/close/sssssssssss/convert`)}
+                      onClick={() => navigate(`/close/sssssssssss/convert`)}
                     >
                       {t('withdraw')}
                     </Button>
                   </Grid>
                 </Grid>
               </Grid>
-              <Divider className={classes.divider} style={{ marginBottom: '0px' }} />
+              <Divider className={classes.dividerStake} style={{ marginBottom: '0px' }} />
               <Grid container justifyContent="space-between" alignItems="center" style={{ paddingTop: '27px' }}>
                 <Grid container alignItems="center" style={{ width: 'auto' }}>
-                  <TokenAvatar src={Icons.logo} className={classes.topCardAvatar} />
+                  <TokenAvatar src={Icons.alpaca} className={classes.topCardAvatar} />
                   <span style={{ marginLeft: '5px' }}> Token {t('rewards')}</span>
                 </Grid>
                 <TypographyStyles style={{ fontSize: '36px' }}>826.23</TypographyStyles>
@@ -290,13 +277,13 @@ export default function Pool({ loading, dummyLendingPoolData, lendingData, staki
             <Card className={classes.topCardWide} style={{ width: '100%' }}>
               <TypographyStyles className={classes.cardTitle}>{t('deposit_position')}</TypographyStyles>
 
-              <Divider className={classes.divider} style={{ marginBottom: '0px' }} />
+              <Divider className={classes.dividerStake} style={{ marginBottom: '0px' }} />
 
               <Grid container wrap="nowrap" justifyContent="center" style={{ height: '156px' }}>
                 <Grid container justifyContent="space-around" direction="column">
                   <TypographyStyles>{t('currency')}</TypographyStyles>
                   <Grid container alignItems="center">
-                    <Avatar src={Icons.btc} className={classes.topCardAvatar} />
+                    <Avatar src={Icons.btcb} className={classes.topCardAvatar} />
 
                     <TypographyStyles style={{ marginLeft: '5px' }}>hBNB</TypographyStyles>
                   </Grid>
@@ -337,7 +324,7 @@ export default function Pool({ loading, dummyLendingPoolData, lendingData, staki
                       variant="contained"
                       color="primary"
                       className={classes.button}
-                      onClick={() => history.push(`/close/sssssssssss/convert`)}
+                      onClick={() => navigate(`/close/sssssssssss/convert`)}
                     >
                       {t('withdraw')}
                     </Button>
@@ -411,8 +398,8 @@ export default function Pool({ loading, dummyLendingPoolData, lendingData, staki
                         className={classes.button}
                         onClick={() => {
                           url.includes('stake')
-                            ? history.push(`/stake/${pool.name}/pledge`)
-                            : history.push(`${pool.name}/deposit`);
+                            ? navigate(`/stake/${pool.name}/pledge`)
+                            : navigate(`${pool.name}/deposit`);
                         }}
                       >
                         {url.includes('stake') ? t('pledge') : t('deposit')}
@@ -423,8 +410,8 @@ export default function Pool({ loading, dummyLendingPoolData, lendingData, staki
                         className={classes.button}
                         onClick={() => {
                           url.includes('stake')
-                            ? history.push(`/stake/${pool.name}/release-pledge`)
-                            : history.push(`${pool.name}/withdraw`);
+                            ? navigate(`/stake/${pool.name}/release-pledge`)
+                            : navigate(`${pool.name}/withdraw`);
                         }}
                       >
                         {url.includes('stake') ? t('withdraw') : t('withdraw')}
@@ -520,8 +507,8 @@ export default function Pool({ loading, dummyLendingPoolData, lendingData, staki
                         className={classes.button}
                         onClick={() => {
                           url.includes('stake')
-                            ? history.push(`/stake/${pool.name}/pledge`)
-                            : history.push(`${pool.name}/deposit`);
+                            ? navigate(`/stake/${pool.name}/pledge`)
+                            : navigate(`${pool.name}/deposit`);
                         }}
                       >
                         {url.includes('stake') ? t('pledge') : t('deposit')}
@@ -532,8 +519,8 @@ export default function Pool({ loading, dummyLendingPoolData, lendingData, staki
                         className={classes.button}
                         onClick={() => {
                           url.includes('stake')
-                            ? history.push(`/stake/${pool.name}/release-pledge`)
-                            : history.push(`${pool.name}/withdraw`);
+                            ? navigate(`/stake/${pool.name}/release-pledge`)
+                            : navigate(`${pool.name}/withdraw`);
                         }}
                       >
                         {url.includes('stake') ? t('withdraw') : t('withdraw')}
