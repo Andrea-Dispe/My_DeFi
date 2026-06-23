@@ -1,15 +1,26 @@
-import { getWeb3MasterChefContract, getWeb3PancakePairContract, fromWei } from './ContractHelper';
+import { getWeb3MasterChefContract, getWeb3PancakePairContract } from './ContractHelper';
 import { BLOCKS_PER_YEAR } from './Config';
 
-export async function getYieldFarmAPR(param = {}) {
+interface YieldFarmParam {
+  pId: number;
+  cakePrice: number;
+  tvl: number;
+}
+
+interface TradingFeesParam {
+  volumeUSD7Day: number;
+  reserveUSD7Day: number;
+}
+
+export async function getYieldFarmAPR(param: YieldFarmParam): Promise<number> {
   const masterChef = getWeb3MasterChefContract(); //new web3.eth.Contract(MasterChefABI, getPancakeMasterChef());
 
-  const cakePerBlock = await masterChef.methods.cakePerBlock().call();
-  const totalAllocPoint = await masterChef.methods.totalAllocPoint().call();
-  // Pid echange pool id
-  const poolInfo = await masterChef.methods.poolInfo(param.pId).call();
+  const cakePerBlock: string = await masterChef.methods.cakePerBlock().call() as string;
+  const totalAllocPoint: string = await masterChef.methods.totalAllocPoint().call() as string;
+  // Pid = exchange pool id
+  const poolInfo: any = await masterChef.methods.poolInfo(param.pId).call();
 
-  const poolCakeYear = BLOCKS_PER_YEAR.times(cakePerBlock * poolInfo.allocPoint).div(totalAllocPoint);
+  const poolCakeYear = BLOCKS_PER_YEAR.times(Number(cakePerBlock) * poolInfo.allocPoint).div(Number(totalAllocPoint));
   // cake price from coingecko
   const emissionCakePerYear = poolCakeYear.times(param.cakePrice).div(10 ** 18)
 
@@ -20,21 +31,21 @@ export async function getYieldFarmAPR(param = {}) {
 
   const yieldFarmAPR = emissionCakePerYear.div(tvl);
 
-  // const masterChef2 = new ethers.Contract(getPancakeMasterChef(), MasterChefABI, provider);
   return yieldFarmAPR.toNumber();
 }
 
-export async function getPancakeTradingFeesAPR(param = {}) {
-  const volumeUSD = (param.volumeUSD7Day * 17) / 10000; // 7日dailyVolumeUSD求和,0.17% - Returned to Liquidity Pools in the form of a fee reward for liquidity providers
+export async function getPancakeTradingFeesAPR(param: TradingFeesParam): Promise<number> {
+  // 7日dailyVolumeUSD求和,0.17% - Returned to Liquidity Pools in the form of a fee reward for liquidity providers
+  const volumeUSD = (param.volumeUSD7Day * 17) / 10000; 
 
   const tradingFeesAPR = (volumeUSD / param.reserveUSD7Day) * 365;
 
   return tradingFeesAPR;
 }
 
-export async function tokensBegin(address) {
-  const contract = await getWeb3PancakePairContract(address);
-  const tokensValue = await contract.methods.getReserves().call();
+export async function tokensBegin(address: string): Promise<[number, number]> {
+  const contract = getWeb3PancakePairContract(address);
+  const tokensValue: any = await contract.methods.getReserves().call();
   // const baseTokenBegin = tokensValue._reserve0
   // const farmingTokenBegin = tokensValue._reserve1
   // need result into ethers instead of wei?
@@ -116,7 +127,6 @@ export const getFarmingData = (
     const totalpriceimpactandtradingfees = (basetoken_total / totolvalue_balance) * dataloss[1]; // Overall loss
     const totalborrowed =
       (farmingtoken_balance / price_now + basetoken_balance) * (leverage - 1) * (1 - totalpriceimpactandtradingfees / 100); // Calculation according to the previous price
-    // get_pair_2 = dataloss[3]
     // Final proportion
     const basetoken_get = basetoken_end * get_pair_1 + basetoken_total - exchangevalue;
     const farmingtoken_get = farmingtoken_end * get_pair_1 + farmingtoken_num;
@@ -155,7 +165,6 @@ export const getFarmingData = (
     return [totalpriceimpactandtradingfees, totalborrowed, basetoken_get, farmingtoken_get];
   }
 };
-// type_of_borrow is bool
 export async function calculate_loss_and_fee_and_pair_standard(
   leverage,
   token0,
@@ -165,7 +174,6 @@ export async function calculate_loss_and_fee_and_pair_standard(
   type_of_borrow,
   tradefee = 0.0025
 ) {
-  // return [totalpriceimpactandtradingfees, the token totalborrowed, token0_get, token1_get]
   token0 = token0 * 10 ** 18;
   token1 = token1 * 10 ** 18;
   let data;

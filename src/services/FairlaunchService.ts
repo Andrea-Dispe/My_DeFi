@@ -1,6 +1,7 @@
 import BigNumber from 'bignumber.js';
 import { getFairLaunchContract, getWeb3FairLaunchContract } from './ContractHelper';
-import { DEFAULT_GAS_LIMIT, DEFAULT_TOKEN_DECIMAL } from './Config';
+import { DEFAULT_TOKEN_DECIMAL } from './Config';
+import { callWithEstimateGas } from './EstimateGas';
 
 interface PoolParam {
   pId?: number;
@@ -25,12 +26,14 @@ export async function getPoolTokenDaily(param: PoolParam = {}): Promise<number> 
     return Number(alpacaPerBlock2) * poolInfo2.allocPoint * blocksPerDay / Number(totalAllocPoint2);
 }
 
-const txOptions = { gasLimit: DEFAULT_GAS_LIMIT };
-
 export const stakeFarm = async (address: string, pid: number, amount: string): Promise<boolean> => {
     const fairLaunch = getFairLaunchContract();
     const value = new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString();
-    const tx = await fairLaunch.deposit(address, pid, value, txOptions);
+    const tx = await callWithEstimateGas({
+      contract: fairLaunch,
+      methodName: 'deposit',
+      methodArgs: [address, pid, value],
+    });
     const receipt = await tx.wait();
     return receipt.status;
 };
@@ -38,14 +41,22 @@ export const stakeFarm = async (address: string, pid: number, amount: string): P
 export const unstakeFarm = async (address: string, pid: number, amount: string): Promise<boolean> => {
     const fairLaunch = getFairLaunchContract();
     const value = new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString();
-    const tx = await fairLaunch.withdraw(address, pid, value, txOptions);
+    const tx = await callWithEstimateGas({
+      contract: fairLaunch,
+      methodName: 'withdraw',
+      methodArgs: [address, pid, value],
+    });
     const receipt = await tx.wait();
     return receipt.status;
 };
 
 export const harvestFarm = async (pid: number): Promise<boolean> => {
     const fairLaunch = getFairLaunchContract();
-    const tx = await fairLaunch.harvest(pid, txOptions);
+    const tx = await callWithEstimateGas({
+      contract: fairLaunch,
+      methodName: 'harvest',
+      methodArgs: [pid],
+    });
     const receipt = await tx.wait();
     return receipt.status;
 };
