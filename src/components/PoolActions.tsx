@@ -1,4 +1,4 @@
-﻿import { useState } from 'react';
+﻿import { useState, useOptimistic, useTransition } from 'react';
 import { Button, Card, Grid, Paper, Typography, Input } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useTranslation } from 'react-i18next';
@@ -96,21 +96,53 @@ const Deposit = () => {
   const { t } = useTranslation();
   const { pathname: url } = useLocation();
   const { id } = useParams<{ id: string }>();
-  const depositToken = id.toUpperCase();
+  const depositToken = id!.toUpperCase();
   const [amount, setAmount] = useState<string>('0');
   const { account } = useWeb3React();
 
-  const getFullBalance = async (account) => {
-    const maxAmount = await getWalletBnbBalance(account);
+  const [balance, setBalance] = useState<string>('0.00000000');
+  const [optimisticBalance, addOptimisticBalance] = useOptimistic(
+    balance,
+    (current: string, delta: number) =>
+      Math.max(0, parseFloat(current) - delta).toFixed(8)
+  );
+
+  const [isPending, startTransition] = useTransition();
+
+  const getFullBalance = async (acc: string | null | undefined) => {
+    if (!acc) return;
+    const maxAmount = await getWalletBnbBalance(acc);
+    setBalance(maxAmount);
     setAmount(maxAmount);
   };
 
-  const handleAmount = (e) => {
-    if (e.target.value < 0) {
+  const handleAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (parseFloat(e.target.value) < 0) {
       setAmount('0');
     } else {
       setAmount(e.target.value);
     }
+  };
+
+  const handleAction = () => {
+    const numericAmount = parseFloat(amount);
+    if (!id || isNaN(numericAmount) || numericAmount <= 0) return;
+
+    startTransition(async () => {
+      //  adjust displayed balance before the tx confirms
+      addOptimisticBalance(numericAmount);
+      try {
+        if (url.includes('deposit')) {
+          await deposit(id, amount);
+        } else {
+          await withdraw(id, amount);
+        }
+        const confirmed = await getWalletBnbBalance(account ?? '');
+        setBalance(confirmed);
+      } catch (err) {
+        console.error('Transaction failed:', err);
+      }
+    });
   };
 
   return (
@@ -152,9 +184,7 @@ const Deposit = () => {
                     <Grid className={classes.cardContent}>
                       {url.includes('deposit') ? t('deposit_amount') : t('withdraw_quantity')}
                     </Grid>
-                    <Grid className={classes.cardContent}>
-                      {t('balance')}: 10.23{depositToken}
-                    </Grid>
+                  <Grid className={classes.cardContent}>{t('balance')}: {optimisticBalance} {depositToken}</Grid>
                   </Grid>
                   <Grid container justifyContent="space-between" style={{ marginTop: '20px' }}>
                     <Input
@@ -192,12 +222,13 @@ const Deposit = () => {
                 </Grid>
 
                 <Grid container justifyContent="space-around" className={classes.buttonsBottomContainer}>
-                  {url.includes('deposit') ? (
+                {url.includes('deposit') ? (
                     <>
                       <Button
                         className={`${classes.button} ${classes.buttonDeposit}`}
                         variant="contained"
                         color="primary"
+                        disabled={isPending}
                       >
                         {t('authorize')}
                       </Button>
@@ -205,9 +236,10 @@ const Deposit = () => {
                         className={`${classes.button} ${classes.buttonDeposit}`}
                         variant="contained"
                         color="primary"
-                        onClick={() => deposit(account, amount)}
+                        disabled={isPending}
+                        onClick={handleAction}
                       >
-                        {t('confirm')}
+                        {isPending ? t('pending') + '...' : t('confirm')}
                       </Button>
                     </>
                   ) : (
@@ -215,10 +247,10 @@ const Deposit = () => {
                       className={`${classes.button} ${classes.buttonWithdraw}`}
                       variant="contained"
                       color="primary"
-                      onClick={() => withdraw(account, amount)}
-
+                      disabled={isPending}
+                      onClick={handleAction}
                     >
-                      {t('confirm')}
+                      {isPending ? t('pending') + '...' : t('confirm')}
                     </Button>
                   )}
                 </Grid>

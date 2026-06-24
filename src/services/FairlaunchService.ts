@@ -35,7 +35,7 @@ export const stakeFarm = async (address: string, pid: number, amount: string): P
       methodArgs: [address, pid, value],
     });
     const receipt = await tx.wait();
-    return receipt.status;
+    return receipt.status === 1;
 };
 
 export const unstakeFarm = async (address: string, pid: number, amount: string): Promise<boolean> => {
@@ -47,7 +47,7 @@ export const unstakeFarm = async (address: string, pid: number, amount: string):
       methodArgs: [address, pid, value],
     });
     const receipt = await tx.wait();
-    return receipt.status;
+    return receipt.status === 1;
 };
 
 export const harvestFarm = async (pid: number): Promise<boolean> => {
@@ -58,5 +58,5 @@ export const harvestFarm = async (pid: number): Promise<boolean> => {
       methodArgs: [pid],
     });
     const receipt = await tx.wait();
-    return receipt.status;
+    return receipt.status === 1;
 };

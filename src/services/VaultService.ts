@@ -117,7 +117,7 @@ export const deposit = async (address: string, amount: string): Promise<boolean>
     methodArgs: [value],
   });
   const receipt = await tx.wait();
-  return receipt.status;
+  return receipt.status === 1;
 };
 
 export const withdraw = async (address: string, amount: string): Promise<boolean> => {
@@ -129,7 +129,7 @@ export const withdraw = async (address: string, amount: string): Promise<boolean
     methodArgs: [value],
   });
   const receipt = await tx.wait();
-  return receipt.status;
+  return receipt.status === 1;
 };
 
 export const farm = async (
@@ -154,7 +154,7 @@ export const farm = async (
     methodArgs: [pid, worker, amount, loan, maxReturn, dataWorker],
   });
   const receipt = await tx.wait();
-  return receipt.status;
+  return receipt.status === 1;
 };
 
 export const unfarm = async (
@@ -176,5 +176,5 @@ export const unfarm = async (
     methodArgs: [pid, worker, amount, loan, maxReturn, dataWorker],
   });
   const receipt = await tx.wait();
-  return receipt.status;
+  return receipt.status === 1;
 };

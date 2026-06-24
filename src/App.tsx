@@ -1,4 +1,4 @@
-import { useState, useEffect, useTransition, useCallback } from 'react';
+import { useState, useEffect, useTransition, useCallback, useMemo } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { createTheme, ThemeProvider, Paper } from '@mui/material';
 import { makeStyles } from '@mui/styles';
@@ -169,16 +169,16 @@ function App() {
     loadFarmData();
   }, [loadFarmData]);
 
-  const darkTheme = createTheme({
+  const darkTheme = useMemo(() => createTheme({
     palette: {
       mode: 'dark',
       background: { paper: '#000000' },
       text: { primary: '#FFFFFF', secondary: '#00FF00' },
       primary: { main: '#009BFD', contrastText: '#ffffff' },
     },
-  });
+  }), []);
 
-  const lightTheme = createTheme({
+  const lightTheme = useMemo(() => createTheme({
     palette: {
       mode: 'light',
       background: { paper: '#313745' },
@@ -186,7 +186,7 @@ function App() {
       divider: '#100E0E',
       primary: { main: '#009BFD', contrastText: '#ffffff' },
     },
-  });
+  }), []);
 
   function changeTheme() {
     setDarkMode((prev) => {
@@ -195,10 +195,10 @@ function App() {
     });
   }
 
-  const stakingData = stakedValue.map((value, index) => ({
-    ...value,
-    TokenDaily: poolTokenDaily[index],
-  }));
+  const stakingData = useMemo(
+    () => stakedValue.map((value, index) => ({ ...value, TokenDaily: poolTokenDaily[index] })),
+    [stakedValue, poolTokenDaily]
+  );
 
   return (
     <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
